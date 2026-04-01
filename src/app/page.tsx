@@ -3,21 +3,24 @@
 import { motion } from "framer-motion";
 import Link from "next/link";
 
-function SteamLine({ delay, x }: { delay: number; x: number }) {
+function SteamLine({ delay, x, height }: { delay: number; x: number; height: number }) {
   return (
     <motion.path
-      d={`M${x},0 Q${x + 4},8 ${x - 2},16 Q${x + 6},24 ${x},32`}
+      d={`M${x},${height} C${x + 3},${height * 0.75} ${x - 4},${height * 0.5} ${x + 2},${height * 0.25} S${x - 2},0 ${x},0`}
       fill="none"
-      stroke="#C8A882"
-      strokeWidth={1.5}
+      stroke="url(#steamGradient)"
+      strokeWidth={2}
       strokeLinecap="round"
       initial={{ pathLength: 0, opacity: 0 }}
-      animate={{ pathLength: 1, opacity: [0, 0.7, 0] }}
+      animate={{
+        pathLength: [0, 1, 1],
+        opacity: [0, 0.6, 0],
+      }}
       transition={{
-        duration: 2.4,
+        duration: 3,
         delay,
         repeat: Infinity,
-        ease: "easeInOut",
+        ease: "easeOut",
       }}
     />
   );
@@ -25,103 +28,150 @@ function SteamLine({ delay, x }: { delay: number; x: number }) {
 
 export default function SplashScreen() {
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-soft-white px-6">
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8, ease: "easeOut" }}
-        className="flex flex-col items-center gap-4"
-      >
-        {/* Coffee cup with steam + heart */}
-        <motion.div
-          initial={{ scale: 0 }}
-          animate={{ scale: 1 }}
-          transition={{ delay: 0.2, duration: 0.6, type: "spring", bounce: 0.4 }}
-          className="relative w-28 h-28 flex items-center justify-center"
-        >
-          {/* Steam */}
-          <svg
-            className="absolute -top-6 left-1/2 -translate-x-1/2"
-            width="40"
-            height="32"
-            viewBox="0 0 40 32"
-          >
-            <SteamLine delay={0} x={12} />
-            <SteamLine delay={0.4} x={20} />
-            <SteamLine delay={0.8} x={28} />
-          </svg>
+    <div className="flex flex-col items-center justify-between min-h-screen bg-soft-white px-8 pb-[env(safe-area-inset-bottom,24px)] pt-[env(safe-area-inset-top,0px)]">
+      {/* Top spacer */}
+      <div className="flex-1" />
 
-          {/* Cup */}
-          <div className="w-20 h-16 bg-cream rounded-b-3xl rounded-t-lg border-2 border-latte/40 relative flex items-center justify-center mt-4">
+      {/* Center content */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 1 }}
+        className="flex flex-col items-center"
+      >
+        {/* Illustration: elegant coffee cup */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+          className="mb-8"
+        >
+          <svg width="120" height="140" viewBox="0 0 120 140" fill="none">
+            <defs>
+              <linearGradient id="steamGradient" x1="0" y1="1" x2="0" y2="0">
+                <stop offset="0%" stopColor="#C8A882" stopOpacity="0.5" />
+                <stop offset="100%" stopColor="#C8A882" stopOpacity="0" />
+              </linearGradient>
+              <linearGradient id="cupGradient" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stopColor="#F5EDE3" />
+                <stop offset="100%" stopColor="#E8DDD0" />
+              </linearGradient>
+              <linearGradient id="coffeeGradient" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stopColor="#C8A882" />
+                <stop offset="100%" stopColor="#A88B6A" />
+              </linearGradient>
+            </defs>
+
+            {/* Steam */}
+            <g transform="translate(30, 0)">
+              <SteamLine delay={0} x={10} height={40} />
+              <SteamLine delay={0.8} x={28} height={44} />
+              <SteamLine delay={1.6} x={46} height={38} />
+            </g>
+
+            {/* Saucer */}
+            <ellipse cx="55" cy="132" rx="42" ry="8" fill="#E8DDD0" />
+            <ellipse cx="55" cy="130" rx="38" ry="6" fill="#F5EDE3" />
+
+            {/* Cup body */}
+            <path
+              d="M25 65 L22 120 Q22 128 35 130 L75 130 Q88 128 88 120 L85 65 Z"
+              fill="url(#cupGradient)"
+              stroke="#D4C4B0"
+              strokeWidth="1"
+            />
+
+            {/* Coffee surface */}
+            <ellipse cx="55" cy="68" rx="30" ry="8" fill="url(#coffeeGradient)" />
+
+            {/* Cup rim */}
+            <ellipse cx="55" cy="65" rx="32" ry="9" fill="none" stroke="#D4C4B0" strokeWidth="1.5" />
+            <ellipse cx="55" cy="65" rx="32" ry="9" fill="#F5EDE3" opacity="0.3" />
+
             {/* Handle */}
-            <div className="absolute -right-3 top-2 w-4 h-8 border-2 border-latte/40 rounded-r-full border-l-0" />
-            {/* Heart in cup */}
-            <motion.svg
-              width="24"
-              height="22"
-              viewBox="0 0 24 22"
-              className="mt-1"
-              initial={{ scale: 0 }}
-              animate={{ scale: 1 }}
-              transition={{ delay: 0.8, type: "spring", bounce: 0.5 }}
+            <path
+              d="M88 78 Q104 80 104 97 Q104 114 88 116"
+              fill="none"
+              stroke="#D4C4B0"
+              strokeWidth="3"
+              strokeLinecap="round"
+            />
+
+            {/* Latte art heart */}
+            <motion.g
+              initial={{ opacity: 0, scale: 0 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.6, duration: 0.8, type: "spring", bounce: 0.4 }}
+              style={{ transformOrigin: "55px 68px" }}
             >
               <path
-                d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"
-                fill="#D4918B"
-                opacity={0.8}
+                d="M55 76 L52.5 73.5 C49 69.5 46 67.5 49 64 C50.5 62 53 62.5 55 65 C57 62.5 59.5 62 61 64 C64 67.5 61 69.5 57.5 73.5 Z"
+                fill="#E8DDD0"
+                opacity="0.9"
               />
-            </motion.svg>
-          </div>
+            </motion.g>
+          </svg>
         </motion.div>
 
         {/* Brand name */}
         <motion.h1
-          initial={{ opacity: 0, y: 10 }}
+          initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.4, duration: 0.6 }}
-          className="font-playfair text-5xl font-bold text-espresso tracking-tight mt-4"
+          transition={{ delay: 0.3, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+          className="font-playfair text-[44px] font-bold text-espresso tracking-tight leading-none"
         >
           Brewmance
         </motion.h1>
 
         {/* Tagline */}
         <motion.p
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.7, duration: 0.6 }}
-          className="text-latte text-lg text-center font-light tracking-wide"
+          initial={{ opacity: 0, y: 8 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.5, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+          className="mt-3 text-latte text-[17px] text-center tracking-wide"
         >
           Fall in love with your next cup
         </motion.p>
+      </motion.div>
 
-        {/* CTA */}
+      {/* Bottom section */}
+      <div className="flex-1 flex flex-col justify-end w-full">
         <motion.div
-          initial={{ opacity: 0, y: 10 }}
+          initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 1.1, duration: 0.6 }}
-          className="mt-10 w-full px-4"
+          transition={{ delay: 0.9, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+          className="w-full space-y-4"
         >
-          <Link href="/auth">
+          <Link href="/auth" className="block">
             <motion.button
-              whileHover={{ scale: 1.03 }}
+              whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.97 }}
-              className="w-full bg-blush text-white py-4 rounded-full text-lg font-medium shadow-lg shadow-blush/25 transition-colors hover:bg-accent-rose"
+              className="w-full bg-blush text-white py-4 rounded-3xl text-[17px] font-semibold shadow-lg shadow-blush/20 hover:bg-accent-rose transition-colors"
             >
               Get Started
             </motion.button>
           </Link>
-        </motion.div>
 
-        {/* Subtle bottom text */}
-        <motion.p
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1.5, duration: 0.8 }}
-          className="mt-4 text-latte/60 text-xs tracking-widest uppercase"
-        >
-          Your perfect cup awaits
-        </motion.p>
-      </motion.div>
+          <Link href="/auth" className="block">
+            <motion.button
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.97 }}
+              className="w-full bg-cream text-espresso py-4 rounded-3xl text-[17px] font-semibold hover:bg-cream/80 transition-colors"
+            >
+              I already have an account
+            </motion.button>
+          </Link>
+
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 1.3, duration: 0.8 }}
+            className="text-center text-latte/50 text-xs tracking-wider uppercase pt-2 pb-2"
+          >
+            Your perfect cup awaits
+          </motion.p>
+        </motion.div>
+      </div>
     </div>
   );
 }
