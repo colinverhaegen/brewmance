@@ -26,7 +26,7 @@ export default function SplashScreen() {
         </h1>
 
         <p className="text-latte text-lg text-center">
-          Find your perfect brew
+          Fall in love with your next brew
         </p>
 
         <motion.div
