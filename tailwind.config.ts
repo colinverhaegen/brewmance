@@ -8,6 +8,9 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        playfair: ["var(--font-playfair)", "serif"],
+      },
       colors: {
         espresso: "#3B2314",
         cream: "#F5EDE3",

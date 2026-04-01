@@ -4,7 +4,10 @@
       "Bash(npx create-next-app@14:*)",
       "Bash(shopt -s dotglob)",
       "Bash(mv /Users/colinverhaegen/brewmance/brewmance-app/* /Users/colinverhaegen/brewmance/)",
-      "Bash(npm run:*)"
+      "Bash(npm run:*)",
+      "Bash(git remote:*)",
+      "Bash(git branch:*)",
+      "Bash(git push:*)"
     ]
   }
 }
