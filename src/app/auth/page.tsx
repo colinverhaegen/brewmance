@@ -1,14 +1,15 @@
 "use client";
 
-import { useState } from "react";
+import { Suspense, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { supabase } from "@/lib/supabase";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 
-export default function AuthPage() {
+function AuthForm() {
   const router = useRouter();
-  const [isSignUp, setIsSignUp] = useState(true);
+  const searchParams = useSearchParams();
+  const [isSignUp, setIsSignUp] = useState(searchParams.get("mode") !== "login");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
@@ -74,7 +75,7 @@ export default function AuthPage() {
         <p className="text-latte text-[15px] mt-2 mb-10">
           {isSignUp
             ? "Start your coffee journey"
-            : "We missed you — let's brew"}
+            : "We missed you — let\u2019s brew"}
         </p>
 
         <AnimatePresence mode="wait">
@@ -199,5 +200,13 @@ export default function AuthPage() {
         )}
       </motion.div>
     </div>
+  );
+}
+
+export default function AuthPage() {
+  return (
+    <Suspense>
+      <AuthForm />
+    </Suspense>
   );
 }

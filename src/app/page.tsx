@@ -152,7 +152,7 @@ export default function SplashScreen() {
             </motion.button>
           </Link>
 
-          <Link href="/auth" className="block">
+          <Link href="/auth?mode=login" className="block">
             <motion.button
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.97 }}
