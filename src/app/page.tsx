@@ -142,13 +142,13 @@ export default function SplashScreen() {
           transition={{ delay: 0.9, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
           className="w-full space-y-4"
         >
-          <Link href="/auth" className="block">
+          <Link href="/onboarding/intro" className="block">
             <motion.button
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.97 }}
               className="w-full bg-blush text-white py-4 rounded-3xl text-[17px] font-semibold shadow-lg shadow-blush/20 hover:bg-accent-rose transition-colors"
             >
-              Get Started
+              I&apos;m new, let&apos;s brew
             </motion.button>
           </Link>
 
@@ -158,7 +158,7 @@ export default function SplashScreen() {
               whileTap={{ scale: 0.97 }}
               className="w-full bg-cream text-espresso py-4 rounded-3xl text-[17px] font-semibold hover:bg-cream/80 transition-colors"
             >
-              I already have an account
+              Bean here, done that
             </motion.button>
           </Link>
 

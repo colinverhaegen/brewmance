@@ -4,9 +4,8 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { supabase } from "@/lib/supabase";
 import { useRouter } from "next/navigation";
-import Link from "next/link";
 
-export default function LoginPage() {
+export default function CreateAccountPage() {
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -18,50 +17,41 @@ export default function LoginPage() {
     setLoading(true);
     setError(null);
 
-    const { error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
-    });
+    const { error } = await supabase.auth.signUp({ email, password });
 
     if (error) {
       setError(error.message);
-    } else {
-      router.push("/brewfile");
+      setLoading(false);
+      return;
     }
 
-    setLoading(false);
+    // Store email for the verification page
+    localStorage.setItem("brewmance_verify_email", email);
+    router.push("/auth/verify");
   }
 
   return (
     <div className="flex flex-col min-h-[100dvh] bg-soft-white px-6 pb-[env(safe-area-inset-bottom,24px)] pt-[env(safe-area-inset-top,48px)]">
-      {/* Back link */}
-      <motion.div
-        initial={{ opacity: 0, x: -8 }}
-        animate={{ opacity: 1, x: 0 }}
-        transition={{ duration: 0.4 }}
-      >
-        <Link
-          href="/"
-          className="inline-flex items-center gap-1.5 text-latte hover:text-espresso transition-colors text-sm font-medium"
-        >
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M19 12H5M12 19l-7-7 7-7" />
-          </svg>
-          Back
-        </Link>
-      </motion.div>
-
       <motion.div
         initial={{ opacity: 0, y: 24 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-        className="flex-1 flex flex-col mt-8"
+        className="flex-1 flex flex-col"
       >
-        <h1 className="font-playfair text-[32px] font-bold text-espresso leading-tight">
-          Welcome{"\n"}back
+        {/* Header */}
+        <motion.div
+          initial={{ scale: 0 }}
+          animate={{ scale: 1 }}
+          transition={{ delay: 0.1, type: "spring", bounce: 0.4 }}
+          className="text-5xl mb-6"
+        >
+          ☕
+        </motion.div>
+        <h1 className="font-playfair text-[28px] font-bold text-espresso leading-tight mb-2">
+          Save your Brewfile
         </h1>
-        <p className="text-latte text-[15px] mt-2 mb-10">
-          We missed you — let&apos;s brew
+        <p className="text-latte text-[15px] mb-8">
+          Create an account so your coffee profile is always with you.
         </p>
 
         <form onSubmit={handleSubmit} className="flex flex-col gap-5">
@@ -92,7 +82,7 @@ export default function LoginPage() {
                 minLength={6}
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                placeholder="Your password"
+                placeholder="At least 6 characters"
                 className="w-full px-4 py-3.5 rounded-xl bg-soft-white border border-latte/15 text-espresso placeholder:text-latte/35 focus:outline-none focus:ring-2 focus:ring-blush/40 focus:border-blush/50 transition-all text-[15px]"
               />
             </div>
@@ -115,7 +105,7 @@ export default function LoginPage() {
             whileTap={{ scale: 0.97 }}
             className="w-full bg-blush text-white py-4 rounded-3xl text-[17px] font-semibold shadow-lg shadow-blush/20 hover:bg-accent-rose transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            {loading ? "Brewing your session..." : "Log In"}
+            {loading ? "Brewing your account..." : "Create Account"}
           </motion.button>
         </form>
 
@@ -126,13 +116,13 @@ export default function LoginPage() {
           className="mt-auto pt-8 pb-4 text-center"
         >
           <p className="text-latte text-sm">
-            New to Brewmance?{" "}
+            Already have an account?{" "}
             <button
               type="button"
-              onClick={() => router.push("/onboarding/intro")}
+              onClick={() => router.push("/auth?mode=login")}
               className="text-blush font-semibold hover:text-accent-rose transition-colors"
             >
-              Start the quiz
+              Log in
             </button>
           </p>
         </motion.div>

@@ -3,7 +3,6 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
-import { supabase } from "@/lib/supabase";
 import { generateBrewfile } from "@/lib/brewfile";
 import type { QuizAnswers } from "@/types/brewfile";
 import QuizLayout from "@/components/ui/QuizLayout";
@@ -80,26 +79,8 @@ export default function OnboardingPage() {
 
     const brewfile = generateBrewfile(answers);
 
-    const { data: { user } } = await supabase.auth.getUser();
-    if (!user) {
-      router.push("/auth");
-      return;
-    }
-
-    // Upsert user profile
-    await supabase.from("users").upsert({
-      id: user.id,
-      email: user.email!,
-      onboarding_completed: true,
-    });
-
-    // Upsert brewfile
-    await supabase.from("brewfiles").upsert({
-      user_id: user.id,
-      ...brewfile,
-      total_logs: 0,
-      last_updated: new Date().toISOString(),
-    });
+    // Save to localStorage — will be persisted to Supabase after account creation
+    localStorage.setItem("brewmance_brewfile", JSON.stringify(brewfile));
 
     setSaving(false);
     setComplete(true);
@@ -130,7 +111,7 @@ export default function OnboardingPage() {
             We&apos;ve mapped your coffee DNA. Let&apos;s see what kind of coffee lover you are.
           </p>
           <motion.button
-            onClick={() => router.push("/brewfile")}
+            onClick={() => router.push("/auth/create")}
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.6 }}
@@ -138,7 +119,7 @@ export default function OnboardingPage() {
             whileTap={{ scale: 0.97 }}
             className="w-full max-w-[280px] bg-blush text-white py-4 rounded-3xl text-[17px] font-semibold shadow-lg shadow-blush/20 hover:bg-accent-rose transition-colors mb-6"
           >
-            See My Brewfile
+            Save My Brewfile
           </motion.button>
           <motion.p
             initial={{ opacity: 0 }}
@@ -172,7 +153,7 @@ export default function OnboardingPage() {
   const STEPS = [
     {
       title: "How do you take\nyour coffee?",
-      subtitle: "Tell us your go-to orders",
+      subtitle: "Tell us your go-to pour(s)",
       content: <StepDrinkType selected={drinkTypes} onSelect={setDrinkTypes} />,
     },
     {
