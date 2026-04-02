@@ -129,9 +129,6 @@ export default function OnboardingPage() {
           <p className="text-latte text-[15px] max-w-[280px] leading-relaxed mb-4">
             We&apos;ve mapped your coffee DNA. Let&apos;s see what kind of coffee lover you are.
           </p>
-          <p className="text-latte/50 text-[13px] max-w-[280px] leading-relaxed italic mb-10">
-            P.S. This is just the start. Your Brewfile is ever-evolving as you engage in more brewmance.
-          </p>
           <motion.button
             onClick={() => router.push("/brewfile")}
             initial={{ opacity: 0, y: 16 }}
@@ -139,10 +136,18 @@ export default function OnboardingPage() {
             transition={{ delay: 0.6 }}
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.97 }}
-            className="w-full max-w-[280px] bg-blush text-white py-4 rounded-3xl text-[17px] font-semibold shadow-lg shadow-blush/20 hover:bg-accent-rose transition-colors"
+            className="w-full max-w-[280px] bg-blush text-white py-4 rounded-3xl text-[17px] font-semibold shadow-lg shadow-blush/20 hover:bg-accent-rose transition-colors mb-6"
           >
             See My Brewfile
           </motion.button>
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 1 }}
+            className="text-latte/50 text-[13px] max-w-[280px] leading-relaxed italic"
+          >
+            P.S. This is just the start. Your Brewfile is ever-evolving as you engage in more brewmance.
+          </motion.p>
         </motion.div>
       </div>
     );

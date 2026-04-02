@@ -3,6 +3,30 @@
 import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
 
+function FallingBean({ delay, x, rotate }: { delay: number; x: number; rotate: number }) {
+  return (
+    <motion.div
+      className="absolute text-2xl"
+      style={{ left: `${x}%` }}
+      initial={{ y: -40, opacity: 0, rotate: rotate }}
+      animate={{
+        y: [-40, 120, 100],
+        opacity: [0, 1, 0.7],
+        rotate: [rotate, rotate + 180, rotate + 220],
+      }}
+      transition={{
+        duration: 2.5,
+        delay,
+        repeat: Infinity,
+        repeatDelay: 1.5,
+        ease: "easeIn",
+      }}
+    >
+      🫘
+    </motion.div>
+  );
+}
+
 export default function OnboardingIntro() {
   const router = useRouter();
 
@@ -16,14 +40,16 @@ export default function OnboardingIntro() {
         transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
         className="flex flex-col items-center text-center"
       >
-        <motion.div
-          initial={{ scale: 0, rotate: -20 }}
-          animate={{ scale: 1, rotate: 0 }}
-          transition={{ delay: 0.2, type: "spring", bounce: 0.4 }}
-          className="text-7xl mb-8"
-        >
-          ☕
-        </motion.div>
+        {/* Falling beans animation */}
+        <div className="relative w-40 h-32 mb-4 overflow-hidden">
+          <FallingBean delay={0} x={15} rotate={-30} />
+          <FallingBean delay={0.4} x={45} rotate={15} />
+          <FallingBean delay={0.8} x={72} rotate={-10} />
+          <FallingBean delay={1.2} x={30} rotate={25} />
+          <FallingBean delay={1.6} x={60} rotate={-20} />
+          <FallingBean delay={0.6} x={85} rotate={35} />
+          <FallingBean delay={1.0} x={8} rotate={-45} />
+        </div>
 
         <motion.h1
           initial={{ opacity: 0, y: 12 }}
