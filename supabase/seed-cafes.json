@@ -1,0 +1,834 @@
+[
+  {
+    "name": "Tiong Bahru Bakery",
+    "address": "56 Eng Hoon St, #01-70, Singapore 160056",
+    "neighborhood": "tiong_bahru",
+    "latitude": 1.2846,
+    "longitude": 103.8318,
+    "google_rating": 4.3,
+    "vibe_tags": ["aesthetic", "brunch-spot", "social"],
+    "drink_types": ["espresso", "latte", "flat-white", "cappuccino", "cold-brew"],
+    "specialty_flags": ["latte-art", "third-wave"],
+    "website": "https://www.tiongbahrubakery.com",
+    "instagram": "@tiaborosg",
+    "drinks": [
+      { "name": "TBB Flat White", "drink_type": "flat-white", "flavor_tags": ["Chocolate", "Caramel", "Nutty"] },
+      { "name": "Iced Latte", "drink_type": "latte", "flavor_tags": ["Vanilla", "Brown Sugar"] },
+      { "name": "Double Espresso", "drink_type": "espresso", "flavor_tags": ["Dark Cocoa", "Toasted"] }
+    ]
+  },
+  {
+    "name": "Forty Hands",
+    "address": "78 Yong Siak St, #01-12, Singapore 163078",
+    "neighborhood": "tiong_bahru",
+    "latitude": 1.2840,
+    "longitude": 103.8310,
+    "google_rating": 4.2,
+    "vibe_tags": ["cozy", "brunch-spot", "social"],
+    "drink_types": ["espresso", "flat-white", "latte", "long-black", "cold-brew"],
+    "specialty_flags": ["third-wave", "latte-art"],
+    "website": "https://www.40hands.com.sg",
+    "instagram": "@40handscoffee",
+    "drinks": [
+      { "name": "40 Hands Flat White", "drink_type": "flat-white", "flavor_tags": ["Caramel", "Chocolate"] },
+      { "name": "Long Black", "drink_type": "long-black", "flavor_tags": ["Dark Cocoa", "Smoky"] },
+      { "name": "Iced Oat Latte", "drink_type": "latte", "flavor_tags": ["Nutty", "Honey"] }
+    ]
+  },
+  {
+    "name": "Nylon Coffee Roasters",
+    "address": "4 Everton Park, #01-40, Singapore 080004",
+    "neighborhood": "tiong_bahru",
+    "latitude": 1.2790,
+    "longitude": 103.8383,
+    "google_rating": 4.5,
+    "vibe_tags": ["minimalist", "hidden-gem", "work-friendly"],
+    "drink_types": ["espresso", "flat-white", "pour-over", "filter", "long-black"],
+    "specialty_flags": ["house-roasted", "single-origin", "pour-over", "third-wave"],
+    "website": "https://www.nyloncoffee.sg",
+    "instagram": "@nyloncoffee",
+    "drinks": [
+      { "name": "Single Origin Pour Over", "drink_type": "pour-over", "flavor_tags": ["Berry", "Floral", "Citrus"] },
+      { "name": "Nylon White", "drink_type": "flat-white", "flavor_tags": ["Chocolate", "Nutty"] },
+      { "name": "Batch Brew", "drink_type": "filter", "flavor_tags": ["Stone Fruit", "Honey", "Floral"] }
+    ]
+  },
+  {
+    "name": "Merci Marcel Tiong Bahru",
+    "address": "56 Eng Hoon St, #01-68, Singapore 160056",
+    "neighborhood": "tiong_bahru",
+    "latitude": 1.2845,
+    "longitude": 103.8316,
+    "google_rating": 4.2,
+    "vibe_tags": ["aesthetic", "brunch-spot", "outdoor"],
+    "drink_types": ["espresso", "latte", "cappuccino", "flat-white", "matcha"],
+    "specialty_flags": ["latte-art", "third-wave"],
+    "website": "https://www.mercimarcel.com",
+    "instagram": "@mercimarcel",
+    "drinks": [
+      { "name": "Marcel Latte", "drink_type": "latte", "flavor_tags": ["Caramel", "Vanilla"] },
+      { "name": "Cappuccino", "drink_type": "cappuccino", "flavor_tags": ["Chocolate", "Toasted"] },
+      { "name": "Matcha Latte", "drink_type": "matcha", "flavor_tags": ["Earthy", "Honey"] }
+    ]
+  },
+  {
+    "name": "Drips Bakery Cafe",
+    "address": "82 Tiong Poh Rd, #01-05, Singapore 160082",
+    "neighborhood": "tiong_bahru",
+    "latitude": 1.2832,
+    "longitude": 103.8325,
+    "google_rating": 4.4,
+    "vibe_tags": ["cozy", "hidden-gem", "aesthetic"],
+    "drink_types": ["espresso", "latte", "flat-white", "cold-brew", "matcha"],
+    "specialty_flags": ["latte-art", "third-wave"],
+    "website": null,
+    "instagram": "@dripsbakerycafe",
+    "drinks": [
+      { "name": "Drips Cold Brew", "drink_type": "cold-brew", "flavor_tags": ["Chocolate", "Caramel", "Nutty"] },
+      { "name": "Flat White", "drink_type": "flat-white", "flavor_tags": ["Toasted", "Honey"] },
+      { "name": "Oat Milk Latte", "drink_type": "latte", "flavor_tags": ["Almond", "Brown Sugar"] }
+    ]
+  },
+  {
+    "name": "Flock Cafe",
+    "address": "78 Yong Siak St, #01-16, Singapore 163078",
+    "neighborhood": "tiong_bahru",
+    "latitude": 1.2841,
+    "longitude": 103.8312,
+    "google_rating": 4.1,
+    "vibe_tags": ["brunch-spot", "social", "aesthetic"],
+    "drink_types": ["espresso", "latte", "cappuccino", "flat-white", "cold-brew"],
+    "specialty_flags": ["latte-art", "third-wave"],
+    "website": "https://www.flockcafe.com.sg",
+    "instagram": "@flockcafe",
+    "drinks": [
+      { "name": "Flock Latte", "drink_type": "latte", "flavor_tags": ["Chocolate", "Caramel"] },
+      { "name": "Cappuccino", "drink_type": "cappuccino", "flavor_tags": ["Nutty", "Toasted"] },
+      { "name": "Iced Long Black", "drink_type": "long-black", "flavor_tags": ["Dark Cocoa", "Citrus"] }
+    ]
+  },
+  {
+    "name": "Whisk & Paddle",
+    "address": "10 Jiak Kim St, #01-01, Singapore 159411",
+    "neighborhood": "tiong_bahru",
+    "latitude": 1.2879,
+    "longitude": 103.8287,
+    "google_rating": 4.0,
+    "vibe_tags": ["outdoor", "social", "cozy"],
+    "drink_types": ["espresso", "flat-white", "latte", "cappuccino", "chai"],
+    "specialty_flags": ["third-wave", "latte-art"],
+    "website": null,
+    "instagram": "@whiskandpaddle",
+    "drinks": [
+      { "name": "W&P Flat White", "drink_type": "flat-white", "flavor_tags": ["Caramel", "Almond"] },
+      { "name": "Dirty Chai Latte", "drink_type": "chai", "flavor_tags": ["Cinnamon", "Spicy", "Honey"] },
+      { "name": "Cold Brew Tonic", "drink_type": "cold-brew", "flavor_tags": ["Citrus", "Berry"] }
+    ]
+  },
+  {
+    "name": "Apartment Coffee",
+    "address": "161 Tiong Bahru Rd, Singapore 160056",
+    "neighborhood": "tiong_bahru",
+    "latitude": 1.2853,
+    "longitude": 103.8298,
+    "google_rating": 4.3,
+    "vibe_tags": ["minimalist", "work-friendly", "hidden-gem"],
+    "drink_types": ["espresso", "flat-white", "pour-over", "long-black", "cold-brew"],
+    "specialty_flags": ["single-origin", "pour-over", "third-wave"],
+    "website": null,
+    "instagram": "@apartmentcoffee",
+    "drinks": [
+      { "name": "Single Origin Filter", "drink_type": "pour-over", "flavor_tags": ["Floral", "Berry", "Stone Fruit"] },
+      { "name": "Apartment White", "drink_type": "flat-white", "flavor_tags": ["Chocolate", "Nutty"] },
+      { "name": "Iced Long Black", "drink_type": "long-black", "flavor_tags": ["Citrus", "Dark Cocoa"] }
+    ]
+  },
+  {
+    "name": "Tiong Bahru Club",
+    "address": "57 Eng Hoon St, #01-80, Singapore 160057",
+    "neighborhood": "tiong_bahru",
+    "latitude": 1.2847,
+    "longitude": 103.8320,
+    "google_rating": 4.1,
+    "vibe_tags": ["rustic", "social", "brunch-spot"],
+    "drink_types": ["espresso", "latte", "flat-white", "cold-brew", "matcha"],
+    "specialty_flags": ["third-wave", "latte-art"],
+    "website": null,
+    "instagram": "@tiongbahruclub",
+    "drinks": [
+      { "name": "Club Latte", "drink_type": "latte", "flavor_tags": ["Caramel", "Vanilla"] },
+      { "name": "Iced Flat White", "drink_type": "flat-white", "flavor_tags": ["Chocolate", "Honey"] },
+      { "name": "Matcha Oat", "drink_type": "matcha", "flavor_tags": ["Earthy", "Brown Sugar"] }
+    ]
+  },
+
+  {
+    "name": "Naïve",
+    "address": "118 Tanjong Pagar Rd, Singapore 088529",
+    "neighborhood": "tanjong_pagar_telok_ayer",
+    "latitude": 1.2768,
+    "longitude": 103.8434,
+    "google_rating": 4.5,
+    "vibe_tags": ["minimalist", "aesthetic", "hidden-gem"],
+    "drink_types": ["espresso", "flat-white", "latte", "pour-over", "filter"],
+    "specialty_flags": ["house-roasted", "single-origin", "pour-over", "third-wave"],
+    "website": "https://www.naivecoffee.com",
+    "instagram": "@naivecoffee",
+    "drinks": [
+      { "name": "Naïve Pour Over", "drink_type": "pour-over", "flavor_tags": ["Floral", "Berry", "Citrus"] },
+      { "name": "Flat White", "drink_type": "flat-white", "flavor_tags": ["Chocolate", "Almond"] },
+      { "name": "Batch Brew", "drink_type": "filter", "flavor_tags": ["Stone Fruit", "Honey"] }
+    ]
+  },
+  {
+    "name": "Burnt Ends Bakery",
+    "address": "20 Teck Lim Rd, Singapore 088391",
+    "neighborhood": "tanjong_pagar_telok_ayer",
+    "latitude": 1.2780,
+    "longitude": 103.8418,
+    "google_rating": 4.4,
+    "vibe_tags": ["aesthetic", "brunch-spot", "cozy"],
+    "drink_types": ["espresso", "flat-white", "latte", "cold-brew", "cappuccino"],
+    "specialty_flags": ["third-wave", "latte-art"],
+    "website": null,
+    "instagram": "@burntendsbakery",
+    "drinks": [
+      { "name": "Bakery Flat White", "drink_type": "flat-white", "flavor_tags": ["Toasted", "Caramel"] },
+      { "name": "Iced Latte", "drink_type": "latte", "flavor_tags": ["Vanilla", "Nutty"] },
+      { "name": "Cold Brew Black", "drink_type": "cold-brew", "flavor_tags": ["Dark Cocoa", "Smoky"] }
+    ]
+  },
+  {
+    "name": "PPP Coffee",
+    "address": "21 Boon Tat St, Singapore 069620",
+    "neighborhood": "tanjong_pagar_telok_ayer",
+    "latitude": 1.2813,
+    "longitude": 103.8486,
+    "google_rating": 4.4,
+    "vibe_tags": ["work-friendly", "minimalist", "industrial"],
+    "drink_types": ["espresso", "flat-white", "pour-over", "cold-brew", "filter"],
+    "specialty_flags": ["house-roasted", "single-origin", "pour-over", "third-wave"],
+    "website": "https://www.pppcoffee.com",
+    "instagram": "@pppcoffee",
+    "drinks": [
+      { "name": "PPP Signature Pour Over", "drink_type": "pour-over", "flavor_tags": ["Tropical", "Berry", "Floral"] },
+      { "name": "PPP Cold Brew", "drink_type": "cold-brew", "flavor_tags": ["Chocolate", "Nutty", "Caramel"] },
+      { "name": "White", "drink_type": "flat-white", "flavor_tags": ["Almond", "Honey"] }
+    ]
+  },
+  {
+    "name": "Common Man Coffee Roasters",
+    "address": "22 Martin Rd, #01-00, Singapore 239058",
+    "neighborhood": "tanjong_pagar_telok_ayer",
+    "latitude": 1.2874,
+    "longitude": 103.8387,
+    "google_rating": 4.3,
+    "vibe_tags": ["industrial", "brunch-spot", "social"],
+    "drink_types": ["espresso", "flat-white", "latte", "pour-over", "cold-brew"],
+    "specialty_flags": ["house-roasted", "single-origin", "third-wave"],
+    "website": "https://www.commonmancoffeeroasters.com",
+    "instagram": "@commonmancoffee",
+    "drinks": [
+      { "name": "Common Man Flat White", "drink_type": "flat-white", "flavor_tags": ["Chocolate", "Caramel", "Toasted"] },
+      { "name": "Single Origin Espresso", "drink_type": "espresso", "flavor_tags": ["Berry", "Citrus"] },
+      { "name": "Cold Brew on Tap", "drink_type": "cold-brew", "flavor_tags": ["Nutty", "Dark Cocoa"] }
+    ]
+  },
+  {
+    "name": "Bearded Bella",
+    "address": "8 Craig Rd, Singapore 089668",
+    "neighborhood": "tanjong_pagar_telok_ayer",
+    "latitude": 1.2779,
+    "longitude": 103.8424,
+    "google_rating": 4.2,
+    "vibe_tags": ["cozy", "brunch-spot", "aesthetic"],
+    "drink_types": ["espresso", "flat-white", "latte", "cappuccino", "matcha"],
+    "specialty_flags": ["latte-art", "third-wave"],
+    "website": null,
+    "instagram": "@beardedbella",
+    "drinks": [
+      { "name": "Bella Latte", "drink_type": "latte", "flavor_tags": ["Vanilla", "Caramel"] },
+      { "name": "Flat White", "drink_type": "flat-white", "flavor_tags": ["Chocolate", "Nutty"] },
+      { "name": "Iced Cappuccino", "drink_type": "cappuccino", "flavor_tags": ["Toasted", "Honey"] }
+    ]
+  },
+  {
+    "name": "Telok Ayer Arts Club",
+    "address": "2 McCallum St, Singapore 069043",
+    "neighborhood": "tanjong_pagar_telok_ayer",
+    "latitude": 1.2806,
+    "longitude": 103.8475,
+    "google_rating": 4.1,
+    "vibe_tags": ["aesthetic", "social", "industrial"],
+    "drink_types": ["espresso", "latte", "flat-white", "cold-brew", "matcha"],
+    "specialty_flags": ["third-wave", "latte-art"],
+    "website": null,
+    "instagram": "@telokayerartsclub",
+    "drinks": [
+      { "name": "Arts Club Latte", "drink_type": "latte", "flavor_tags": ["Caramel", "Almond"] },
+      { "name": "Iced Cold Brew", "drink_type": "cold-brew", "flavor_tags": ["Chocolate", "Citrus"] },
+      { "name": "Matcha Latte", "drink_type": "matcha", "flavor_tags": ["Earthy", "Vanilla"] }
+    ]
+  },
+  {
+    "name": "Kurasu Singapore",
+    "address": "27 Tanjong Pagar Rd, Singapore 088450",
+    "neighborhood": "tanjong_pagar_telok_ayer",
+    "latitude": 1.2773,
+    "longitude": 103.8440,
+    "google_rating": 4.6,
+    "vibe_tags": ["minimalist", "hidden-gem", "aesthetic"],
+    "drink_types": ["espresso", "flat-white", "pour-over", "latte", "filter"],
+    "specialty_flags": ["single-origin", "pour-over", "third-wave"],
+    "website": "https://www.kurasu.kyoto",
+    "instagram": "@kuaborosg",
+    "drinks": [
+      { "name": "Kyoto Pour Over", "drink_type": "pour-over", "flavor_tags": ["Floral", "Jasmine", "Stone Fruit"] },
+      { "name": "Kurasu Latte", "drink_type": "latte", "flavor_tags": ["Chocolate", "Honey"] },
+      { "name": "Filter of the Day", "drink_type": "filter", "flavor_tags": ["Berry", "Tropical"] }
+    ]
+  },
+  {
+    "name": "Assembly Coffee",
+    "address": "26 Tanjong Pagar Rd, Singapore 088450",
+    "neighborhood": "tanjong_pagar_telok_ayer",
+    "latitude": 1.2774,
+    "longitude": 103.8438,
+    "google_rating": 4.3,
+    "vibe_tags": ["minimalist", "work-friendly", "hidden-gem"],
+    "drink_types": ["espresso", "flat-white", "pour-over", "cold-brew", "filter"],
+    "specialty_flags": ["house-roasted", "single-origin", "pour-over"],
+    "website": "https://www.assemblycoffee.com.sg",
+    "instagram": "@assemblycoffee",
+    "drinks": [
+      { "name": "Assembly White", "drink_type": "flat-white", "flavor_tags": ["Nutty", "Chocolate", "Caramel"] },
+      { "name": "Single Origin Filter", "drink_type": "filter", "flavor_tags": ["Tropical", "Floral"] },
+      { "name": "Sparkling Cold Brew", "drink_type": "cold-brew", "flavor_tags": ["Citrus", "Berry"] }
+    ]
+  },
+  {
+    "name": "Alchemist",
+    "address": "36 Telok Ayer St, Singapore 048822",
+    "neighborhood": "tanjong_pagar_telok_ayer",
+    "latitude": 1.2819,
+    "longitude": 103.8488,
+    "google_rating": 4.2,
+    "vibe_tags": ["work-friendly", "industrial", "minimalist"],
+    "drink_types": ["espresso", "flat-white", "latte", "long-black", "cold-brew"],
+    "specialty_flags": ["third-wave", "latte-art"],
+    "website": null,
+    "instagram": "@alchemist.sg",
+    "drinks": [
+      { "name": "Alchemist Flat White", "drink_type": "flat-white", "flavor_tags": ["Toasted", "Chocolate"] },
+      { "name": "Long Black", "drink_type": "long-black", "flavor_tags": ["Dark Cocoa", "Smoky"] },
+      { "name": "Iced Oat Latte", "drink_type": "latte", "flavor_tags": ["Almond", "Brown Sugar"] }
+    ]
+  },
+
+  {
+    "name": "Symmetry",
+    "address": "9 Jln Kubor, Singapore 199206",
+    "neighborhood": "kampong_glam_bugis",
+    "latitude": 1.3030,
+    "longitude": 103.8590,
+    "google_rating": 4.3,
+    "vibe_tags": ["aesthetic", "brunch-spot", "social"],
+    "drink_types": ["espresso", "flat-white", "latte", "cold-brew", "cappuccino"],
+    "specialty_flags": ["latte-art", "third-wave"],
+    "website": "https://www.symmetry.com.sg",
+    "instagram": "@symmetry.sg",
+    "drinks": [
+      { "name": "Symmetry Flat White", "drink_type": "flat-white", "flavor_tags": ["Chocolate", "Caramel"] },
+      { "name": "Iced Latte", "drink_type": "latte", "flavor_tags": ["Vanilla", "Nutty"] },
+      { "name": "Cold Brew Black", "drink_type": "cold-brew", "flavor_tags": ["Dark Cocoa", "Citrus"] }
+    ]
+  },
+  {
+    "name": "Maison Ikkoku",
+    "address": "20 Kandahar St, Singapore 198885",
+    "neighborhood": "kampong_glam_bugis",
+    "latitude": 1.3014,
+    "longitude": 103.8597,
+    "google_rating": 4.2,
+    "vibe_tags": ["hidden-gem", "aesthetic", "social"],
+    "drink_types": ["espresso", "latte", "flat-white", "pour-over", "cold-brew"],
+    "specialty_flags": ["single-origin", "pour-over", "third-wave"],
+    "website": "https://www.maisonikkoku.com",
+    "instagram": "@maisonikkoku",
+    "drinks": [
+      { "name": "Ikkoku Pour Over", "drink_type": "pour-over", "flavor_tags": ["Floral", "Berry"] },
+      { "name": "Flat White", "drink_type": "flat-white", "flavor_tags": ["Chocolate", "Toasted"] },
+      { "name": "Cold Brew Tonic", "drink_type": "cold-brew", "flavor_tags": ["Citrus", "Tropical"] }
+    ]
+  },
+  {
+    "name": "Glasshouse by DHM",
+    "address": "8 Jln Klapa, Singapore 199320",
+    "neighborhood": "kampong_glam_bugis",
+    "latitude": 1.3031,
+    "longitude": 103.8613,
+    "google_rating": 4.4,
+    "vibe_tags": ["aesthetic", "outdoor", "social"],
+    "drink_types": ["espresso", "latte", "flat-white", "cold-brew", "matcha"],
+    "specialty_flags": ["latte-art", "third-wave"],
+    "website": null,
+    "instagram": "@glasshousedhm",
+    "drinks": [
+      { "name": "Glasshouse Latte", "drink_type": "latte", "flavor_tags": ["Honey", "Vanilla"] },
+      { "name": "Flat White", "drink_type": "flat-white", "flavor_tags": ["Chocolate", "Nutty"] },
+      { "name": "Iced Matcha", "drink_type": "matcha", "flavor_tags": ["Earthy", "Brown Sugar"] }
+    ]
+  },
+  {
+    "name": "Konditori",
+    "address": "31 Haji Ln, Singapore 189224",
+    "neighborhood": "kampong_glam_bugis",
+    "latitude": 1.3014,
+    "longitude": 103.8598,
+    "google_rating": 4.1,
+    "vibe_tags": ["cozy", "hidden-gem", "rustic"],
+    "drink_types": ["espresso", "flat-white", "latte", "filter", "chai"],
+    "specialty_flags": ["third-wave", "latte-art"],
+    "website": null,
+    "instagram": "@konditori.sg",
+    "drinks": [
+      { "name": "Scandinavian Filter", "drink_type": "filter", "flavor_tags": ["Floral", "Honey", "Stone Fruit"] },
+      { "name": "Latte", "drink_type": "latte", "flavor_tags": ["Caramel", "Chocolate"] },
+      { "name": "Spiced Chai", "drink_type": "chai", "flavor_tags": ["Cinnamon", "Spicy", "Honey"] }
+    ]
+  },
+  {
+    "name": "Siplo Coffee",
+    "address": "50 Arab St, Singapore 199745",
+    "neighborhood": "kampong_glam_bugis",
+    "latitude": 1.3019,
+    "longitude": 103.8588,
+    "google_rating": 4.3,
+    "vibe_tags": ["minimalist", "work-friendly", "hidden-gem"],
+    "drink_types": ["espresso", "flat-white", "pour-over", "cold-brew", "long-black"],
+    "specialty_flags": ["single-origin", "pour-over", "house-roasted"],
+    "website": null,
+    "instagram": "@siplocoffee",
+    "drinks": [
+      { "name": "Siplo Pour Over", "drink_type": "pour-over", "flavor_tags": ["Berry", "Floral", "Citrus"] },
+      { "name": "White", "drink_type": "flat-white", "flavor_tags": ["Nutty", "Chocolate"] },
+      { "name": "Black Cold Brew", "drink_type": "cold-brew", "flavor_tags": ["Dark Cocoa", "Smoky"] }
+    ]
+  },
+  {
+    "name": "Tipo",
+    "address": "785 North Bridge Rd, Singapore 198753",
+    "neighborhood": "kampong_glam_bugis",
+    "latitude": 1.3009,
+    "longitude": 103.8587,
+    "google_rating": 4.5,
+    "vibe_tags": ["minimalist", "aesthetic", "hidden-gem"],
+    "drink_types": ["espresso", "flat-white", "latte", "pour-over", "filter"],
+    "specialty_flags": ["single-origin", "pour-over", "third-wave"],
+    "website": null,
+    "instagram": "@tipo.sg",
+    "drinks": [
+      { "name": "Tipo Filter", "drink_type": "filter", "flavor_tags": ["Tropical", "Floral", "Stone Fruit"] },
+      { "name": "Tipo White", "drink_type": "flat-white", "flavor_tags": ["Caramel", "Almond"] },
+      { "name": "Espresso Tonic", "drink_type": "espresso", "flavor_tags": ["Citrus", "Berry"] }
+    ]
+  },
+  {
+    "name": "Bravery Cafe",
+    "address": "36 Queen St, Singapore 188540",
+    "neighborhood": "kampong_glam_bugis",
+    "latitude": 1.2989,
+    "longitude": 103.8536,
+    "google_rating": 4.0,
+    "vibe_tags": ["cozy", "brunch-spot", "work-friendly"],
+    "drink_types": ["espresso", "flat-white", "latte", "cappuccino", "cold-brew"],
+    "specialty_flags": ["third-wave", "latte-art"],
+    "website": null,
+    "instagram": "@braverycafe",
+    "drinks": [
+      { "name": "Bravery Latte", "drink_type": "latte", "flavor_tags": ["Vanilla", "Caramel"] },
+      { "name": "Double Shot Espresso", "drink_type": "espresso", "flavor_tags": ["Dark Cocoa", "Toasted"] },
+      { "name": "Iced Flat White", "drink_type": "flat-white", "flavor_tags": ["Chocolate", "Honey"] }
+    ]
+  },
+  {
+    "name": "Artistry",
+    "address": "17 Jln Pinang, Singapore 199149",
+    "neighborhood": "kampong_glam_bugis",
+    "latitude": 1.3023,
+    "longitude": 103.8581,
+    "google_rating": 4.2,
+    "vibe_tags": ["aesthetic", "social", "industrial"],
+    "drink_types": ["espresso", "latte", "flat-white", "cold-brew", "matcha"],
+    "specialty_flags": ["third-wave", "latte-art"],
+    "website": "https://www.artistry.sg",
+    "instagram": "@artistry.sg",
+    "drinks": [
+      { "name": "Artistry Latte", "drink_type": "latte", "flavor_tags": ["Caramel", "Nutty"] },
+      { "name": "Iced Cold Brew", "drink_type": "cold-brew", "flavor_tags": ["Chocolate", "Citrus"] },
+      { "name": "Flat White", "drink_type": "flat-white", "flavor_tags": ["Toasted", "Almond"] }
+    ]
+  },
+  {
+    "name": "Ronin Specialty Coffee",
+    "address": "17 Hong Kong St, Singapore 059660",
+    "neighborhood": "kampong_glam_bugis",
+    "latitude": 1.2882,
+    "longitude": 103.8476,
+    "google_rating": 4.5,
+    "vibe_tags": ["minimalist", "hidden-gem", "work-friendly"],
+    "drink_types": ["espresso", "flat-white", "pour-over", "filter", "long-black"],
+    "specialty_flags": ["house-roasted", "single-origin", "pour-over", "third-wave"],
+    "website": null,
+    "instagram": "@ronincoffee.sg",
+    "drinks": [
+      { "name": "Ronin Pour Over", "drink_type": "pour-over", "flavor_tags": ["Floral", "Jasmine", "Berry"] },
+      { "name": "Ronin White", "drink_type": "flat-white", "flavor_tags": ["Chocolate", "Hazelnut"] },
+      { "name": "Long Black", "drink_type": "long-black", "flavor_tags": ["Dark Cocoa", "Smoky", "Citrus"] }
+    ]
+  },
+
+  {
+    "name": "% Arabica Singapore",
+    "address": "56 Tras St, Singapore 078995",
+    "neighborhood": "orchard_river_valley",
+    "latitude": 1.2778,
+    "longitude": 103.8443,
+    "google_rating": 4.3,
+    "vibe_tags": ["minimalist", "aesthetic", "social"],
+    "drink_types": ["espresso", "latte", "flat-white", "cappuccino", "cold-brew"],
+    "specialty_flags": ["single-origin", "latte-art", "third-wave"],
+    "website": "https://www.arabica.coffee",
+    "instagram": "@arabica.journal",
+    "drinks": [
+      { "name": "% Latte", "drink_type": "latte", "flavor_tags": ["Chocolate", "Caramel"] },
+      { "name": "Spanish Latte", "drink_type": "latte", "flavor_tags": ["Vanilla", "Brown Sugar", "Honey"] },
+      { "name": "Kyoto Cold Brew", "drink_type": "cold-brew", "flavor_tags": ["Nutty", "Citrus"] }
+    ]
+  },
+  {
+    "name": "Bacha Coffee",
+    "address": "2 Orchard Turn, #01-15/16 ION Orchard, Singapore 238801",
+    "neighborhood": "orchard_river_valley",
+    "latitude": 1.3039,
+    "longitude": 103.8318,
+    "google_rating": 4.4,
+    "vibe_tags": ["aesthetic", "social", "cozy"],
+    "drink_types": ["espresso", "latte", "cappuccino", "filter", "cold-brew"],
+    "specialty_flags": ["single-origin", "third-wave"],
+    "website": "https://www.bachacoffee.com",
+    "instagram": "@bachacoffee",
+    "drinks": [
+      { "name": "Bacha Espresso", "drink_type": "espresso", "flavor_tags": ["Dark Cocoa", "Spicy", "Toasted"] },
+      { "name": "Iced Coffee Bag Brew", "drink_type": "filter", "flavor_tags": ["Floral", "Tropical"] },
+      { "name": "Grand Cru Cappuccino", "drink_type": "cappuccino", "flavor_tags": ["Chocolate", "Honey"] }
+    ]
+  },
+  {
+    "name": "Oriole Coffee + Bar",
+    "address": "96 Somerset Rd, #01-01 Pan Pacific Serviced Suites, Singapore 238163",
+    "neighborhood": "orchard_river_valley",
+    "latitude": 1.3010,
+    "longitude": 103.8378,
+    "google_rating": 4.3,
+    "vibe_tags": ["cozy", "work-friendly", "aesthetic"],
+    "drink_types": ["espresso", "flat-white", "pour-over", "cold-brew", "filter"],
+    "specialty_flags": ["house-roasted", "single-origin", "pour-over", "third-wave"],
+    "website": "https://www.oriolecoffee.com",
+    "instagram": "@oriolecoffee",
+    "drinks": [
+      { "name": "Oriole Pour Over", "drink_type": "pour-over", "flavor_tags": ["Floral", "Berry", "Stone Fruit"] },
+      { "name": "Flat White", "drink_type": "flat-white", "flavor_tags": ["Chocolate", "Nutty"] },
+      { "name": "Cold Brew Flight", "drink_type": "cold-brew", "flavor_tags": ["Tropical", "Citrus", "Berry"] }
+    ]
+  },
+  {
+    "name": "Dutch Colony Coffee Co",
+    "address": "113 Killiney Rd, Singapore 239551",
+    "neighborhood": "orchard_river_valley",
+    "latitude": 1.2997,
+    "longitude": 103.8376,
+    "google_rating": 4.2,
+    "vibe_tags": ["industrial", "work-friendly", "minimalist"],
+    "drink_types": ["espresso", "flat-white", "latte", "pour-over", "cold-brew"],
+    "specialty_flags": ["house-roasted", "single-origin", "third-wave"],
+    "website": "https://www.dutchcolony.com.sg",
+    "instagram": "@dutchcolonycoffee",
+    "drinks": [
+      { "name": "Dutch Flat White", "drink_type": "flat-white", "flavor_tags": ["Caramel", "Chocolate", "Toasted"] },
+      { "name": "Pour Over of the Week", "drink_type": "pour-over", "flavor_tags": ["Floral", "Tropical"] },
+      { "name": "Iced Long Black", "drink_type": "long-black", "flavor_tags": ["Dark Cocoa", "Smoky"] }
+    ]
+  },
+  {
+    "name": "Joe & Dough",
+    "address": "181 Orchard Rd, #01-10A Orchard Central, Singapore 238896",
+    "neighborhood": "orchard_river_valley",
+    "latitude": 1.3011,
+    "longitude": 103.8393,
+    "google_rating": 4.1,
+    "vibe_tags": ["cozy", "brunch-spot", "work-friendly"],
+    "drink_types": ["espresso", "flat-white", "latte", "cappuccino", "cold-brew"],
+    "specialty_flags": ["third-wave", "latte-art"],
+    "website": "https://www.joeanddough.com",
+    "instagram": "@joeanddough",
+    "drinks": [
+      { "name": "J&D Latte", "drink_type": "latte", "flavor_tags": ["Vanilla", "Caramel"] },
+      { "name": "Flat White", "drink_type": "flat-white", "flavor_tags": ["Chocolate", "Nutty"] },
+      { "name": "Cold Brew", "drink_type": "cold-brew", "flavor_tags": ["Almond", "Brown Sugar"] }
+    ]
+  },
+  {
+    "name": "Jewel Coffee",
+    "address": "111 Somerset Rd, #01-05 TripleOne Somerset, Singapore 238164",
+    "neighborhood": "orchard_river_valley",
+    "latitude": 1.3005,
+    "longitude": 103.8380,
+    "google_rating": 4.2,
+    "vibe_tags": ["minimalist", "work-friendly", "hidden-gem"],
+    "drink_types": ["espresso", "flat-white", "latte", "pour-over", "long-black"],
+    "specialty_flags": ["single-origin", "pour-over", "third-wave"],
+    "website": "https://www.jewelcoffee.com",
+    "instagram": "@jewelcoffee",
+    "drinks": [
+      { "name": "Jewel Pour Over", "drink_type": "pour-over", "flavor_tags": ["Berry", "Floral"] },
+      { "name": "Flat White", "drink_type": "flat-white", "flavor_tags": ["Caramel", "Toasted"] },
+      { "name": "Iced Americano", "drink_type": "long-black", "flavor_tags": ["Dark Cocoa", "Citrus"] }
+    ]
+  },
+  {
+    "name": "Huggs Coffee",
+    "address": "313 Orchard Rd, #B3-41 313@Somerset, Singapore 238895",
+    "neighborhood": "orchard_river_valley",
+    "latitude": 1.3009,
+    "longitude": 103.8384,
+    "google_rating": 4.0,
+    "vibe_tags": ["cozy", "social", "work-friendly"],
+    "drink_types": ["espresso", "latte", "flat-white", "cold-brew", "matcha"],
+    "specialty_flags": ["third-wave", "latte-art"],
+    "website": "https://www.huggscoffee.com",
+    "instagram": "@huggscoffee",
+    "drinks": [
+      { "name": "Huggs Latte", "drink_type": "latte", "flavor_tags": ["Honey", "Vanilla"] },
+      { "name": "Iced Flat White", "drink_type": "flat-white", "flavor_tags": ["Chocolate", "Almond"] },
+      { "name": "Matcha Latte", "drink_type": "matcha", "flavor_tags": ["Earthy", "Brown Sugar"] }
+    ]
+  },
+  {
+    "name": "Crescendo Coffee",
+    "address": "8 Mohamed Sultan Rd, Singapore 238958",
+    "neighborhood": "orchard_river_valley",
+    "latitude": 1.2924,
+    "longitude": 103.8395,
+    "google_rating": 4.4,
+    "vibe_tags": ["minimalist", "hidden-gem", "aesthetic"],
+    "drink_types": ["espresso", "flat-white", "pour-over", "filter", "cold-brew"],
+    "specialty_flags": ["house-roasted", "single-origin", "pour-over"],
+    "website": null,
+    "instagram": "@crescendo.coffee",
+    "drinks": [
+      { "name": "Crescendo Filter", "drink_type": "filter", "flavor_tags": ["Floral", "Stone Fruit", "Honey"] },
+      { "name": "Flat White", "drink_type": "flat-white", "flavor_tags": ["Chocolate", "Caramel"] },
+      { "name": "Espresso Tonic", "drink_type": "espresso", "flavor_tags": ["Citrus", "Berry"] }
+    ]
+  },
+  {
+    "name": "Homeground Coffee Roasters",
+    "address": "1 Upper Atchison Rd, Singapore 347341",
+    "neighborhood": "orchard_river_valley",
+    "latitude": 1.3071,
+    "longitude": 103.8307,
+    "google_rating": 4.5,
+    "vibe_tags": ["industrial", "work-friendly", "hidden-gem"],
+    "drink_types": ["espresso", "flat-white", "pour-over", "filter", "cold-brew"],
+    "specialty_flags": ["house-roasted", "single-origin", "pour-over", "third-wave"],
+    "website": "https://www.homegroundcoffeeroasters.com",
+    "instagram": "@homegroundcoffee",
+    "drinks": [
+      { "name": "Homeground Pour Over", "drink_type": "pour-over", "flavor_tags": ["Tropical", "Berry", "Floral"] },
+      { "name": "Signature White", "drink_type": "flat-white", "flavor_tags": ["Nutty", "Chocolate", "Caramel"] },
+      { "name": "Nitro Cold Brew", "drink_type": "cold-brew", "flavor_tags": ["Dark Cocoa", "Honey"] }
+    ]
+  },
+
+  {
+    "name": "Creamier Handcrafted Ice Cream & Coffee",
+    "address": "Block 44, Jln Merah Saga, #01-52, Singapore 278116",
+    "neighborhood": "holland_village_dempsey",
+    "latitude": 1.3112,
+    "longitude": 103.7962,
+    "google_rating": 4.3,
+    "vibe_tags": ["cozy", "hidden-gem", "rustic"],
+    "drink_types": ["espresso", "latte", "flat-white", "cold-brew", "cappuccino"],
+    "specialty_flags": ["third-wave", "latte-art"],
+    "website": "https://www.creamier.com.sg",
+    "instagram": "@creamier.sg",
+    "drinks": [
+      { "name": "Affogato", "drink_type": "espresso", "flavor_tags": ["Vanilla", "Dark Cocoa", "Caramel"] },
+      { "name": "Flat White", "drink_type": "flat-white", "flavor_tags": ["Chocolate", "Nutty"] },
+      { "name": "Iced Latte", "drink_type": "latte", "flavor_tags": ["Honey", "Almond"] }
+    ]
+  },
+  {
+    "name": "Sunday Folks",
+    "address": "44 Jln Merah Saga, #01-52, Singapore 278116",
+    "neighborhood": "holland_village_dempsey",
+    "latitude": 1.3110,
+    "longitude": 103.7960,
+    "google_rating": 4.2,
+    "vibe_tags": ["aesthetic", "brunch-spot", "social"],
+    "drink_types": ["espresso", "latte", "flat-white", "matcha", "cold-brew"],
+    "specialty_flags": ["latte-art", "third-wave"],
+    "website": "https://www.sundayfolks.com",
+    "instagram": "@sundayfolks",
+    "drinks": [
+      { "name": "Sunday Latte", "drink_type": "latte", "flavor_tags": ["Vanilla", "Caramel"] },
+      { "name": "Matcha Soft Serve Latte", "drink_type": "matcha", "flavor_tags": ["Earthy", "Honey"] },
+      { "name": "Cold Brew", "drink_type": "cold-brew", "flavor_tags": ["Chocolate", "Nutty"] }
+    ]
+  },
+  {
+    "name": "Dempsey Cookhouse and Bar",
+    "address": "Block 17D, Dempsey Rd, Singapore 249676",
+    "neighborhood": "holland_village_dempsey",
+    "latitude": 1.3065,
+    "longitude": 103.8094,
+    "google_rating": 4.1,
+    "vibe_tags": ["outdoor", "brunch-spot", "social"],
+    "drink_types": ["espresso", "latte", "cappuccino", "flat-white", "cold-brew"],
+    "specialty_flags": ["third-wave", "latte-art"],
+    "website": null,
+    "instagram": "@dempseycookhouse",
+    "drinks": [
+      { "name": "Cookhouse Latte", "drink_type": "latte", "flavor_tags": ["Caramel", "Vanilla"] },
+      { "name": "Cappuccino", "drink_type": "cappuccino", "flavor_tags": ["Chocolate", "Toasted"] },
+      { "name": "Cold Brew on Ice", "drink_type": "cold-brew", "flavor_tags": ["Nutty", "Dark Cocoa"] }
+    ]
+  },
+  {
+    "name": "The Halia",
+    "address": "1 Cluny Rd, Ginger Garden, Singapore Botanic Gardens, Singapore 259569",
+    "neighborhood": "holland_village_dempsey",
+    "latitude": 1.3138,
+    "longitude": 103.8150,
+    "google_rating": 4.3,
+    "vibe_tags": ["outdoor", "aesthetic", "brunch-spot"],
+    "drink_types": ["espresso", "latte", "flat-white", "cappuccino", "chai"],
+    "specialty_flags": ["third-wave", "latte-art"],
+    "website": "https://www.thehalia.com",
+    "instagram": "@thehalia",
+    "drinks": [
+      { "name": "Halia Ginger Latte", "drink_type": "latte", "flavor_tags": ["Spicy", "Honey", "Cinnamon"] },
+      { "name": "Flat White", "drink_type": "flat-white", "flavor_tags": ["Chocolate", "Caramel"] },
+      { "name": "Chai Latte", "drink_type": "chai", "flavor_tags": ["Cinnamon", "Vanilla", "Spicy"] }
+    ]
+  },
+  {
+    "name": "Prive Dempsey",
+    "address": "Block 1A, Dempsey Rd, Singapore 249679",
+    "neighborhood": "holland_village_dempsey",
+    "latitude": 1.3052,
+    "longitude": 103.8107,
+    "google_rating": 4.0,
+    "vibe_tags": ["outdoor", "social", "brunch-spot"],
+    "drink_types": ["espresso", "latte", "flat-white", "cappuccino", "cold-brew"],
+    "specialty_flags": ["third-wave", "latte-art"],
+    "website": "https://www.prive.com.sg",
+    "instagram": "@privegroup",
+    "drinks": [
+      { "name": "Prive Latte", "drink_type": "latte", "flavor_tags": ["Honey", "Vanilla"] },
+      { "name": "Iced Cappuccino", "drink_type": "cappuccino", "flavor_tags": ["Chocolate", "Toasted"] },
+      { "name": "Cold Brew", "drink_type": "cold-brew", "flavor_tags": ["Nutty", "Caramel"] }
+    ]
+  },
+  {
+    "name": "Nassim Hill Bakery Bistro Bar",
+    "address": "56 Tanglin Rd, #01-03, Singapore 247964",
+    "neighborhood": "holland_village_dempsey",
+    "latitude": 1.3045,
+    "longitude": 103.8193,
+    "google_rating": 4.2,
+    "vibe_tags": ["cozy", "brunch-spot", "outdoor"],
+    "drink_types": ["espresso", "flat-white", "latte", "cappuccino", "cold-brew"],
+    "specialty_flags": ["third-wave", "latte-art"],
+    "website": "https://www.nassimhill.com",
+    "instagram": "@nassimhill",
+    "drinks": [
+      { "name": "Nassim Flat White", "drink_type": "flat-white", "flavor_tags": ["Caramel", "Nutty"] },
+      { "name": "Double Espresso", "drink_type": "espresso", "flavor_tags": ["Dark Cocoa", "Smoky"] },
+      { "name": "Iced Latte", "drink_type": "latte", "flavor_tags": ["Almond", "Vanilla"] }
+    ]
+  },
+  {
+    "name": "Percolate",
+    "address": "136 Bukit Timah Rd, Singapore 229838",
+    "neighborhood": "holland_village_dempsey",
+    "latitude": 1.3012,
+    "longitude": 103.8267,
+    "google_rating": 4.3,
+    "vibe_tags": ["cozy", "work-friendly", "minimalist"],
+    "drink_types": ["espresso", "flat-white", "latte", "pour-over", "cold-brew"],
+    "specialty_flags": ["single-origin", "pour-over", "third-wave"],
+    "website": null,
+    "instagram": "@percolatesg",
+    "drinks": [
+      { "name": "Percolate Pour Over", "drink_type": "pour-over", "flavor_tags": ["Floral", "Berry", "Stone Fruit"] },
+      { "name": "Flat White", "drink_type": "flat-white", "flavor_tags": ["Chocolate", "Caramel"] },
+      { "name": "Iced Cold Brew", "drink_type": "cold-brew", "flavor_tags": ["Nutty", "Citrus"] }
+    ]
+  },
+  {
+    "name": "Atlas Coffeehouse",
+    "address": "6 Duke's Rd, Singapore 268886",
+    "neighborhood": "holland_village_dempsey",
+    "latitude": 1.3144,
+    "longitude": 103.8138,
+    "google_rating": 4.4,
+    "vibe_tags": ["brunch-spot", "aesthetic", "social"],
+    "drink_types": ["espresso", "flat-white", "latte", "cold-brew", "cappuccino"],
+    "specialty_flags": ["third-wave", "latte-art"],
+    "website": "https://www.atlascoffeehouse.com.sg",
+    "instagram": "@atlascoffeehouse",
+    "drinks": [
+      { "name": "Atlas Flat White", "drink_type": "flat-white", "flavor_tags": ["Chocolate", "Toasted", "Nutty"] },
+      { "name": "Butterscotch Latte", "drink_type": "latte", "flavor_tags": ["Toffee", "Brown Sugar", "Vanilla"] },
+      { "name": "Cold Brew Black", "drink_type": "cold-brew", "flavor_tags": ["Dark Cocoa", "Citrus"] }
+    ]
+  },
+  {
+    "name": "PS.Cafe Dempsey",
+    "address": "28B Harding Rd, Singapore 249549",
+    "neighborhood": "holland_village_dempsey",
+    "latitude": 1.3057,
+    "longitude": 103.8099,
+    "google_rating": 4.2,
+    "vibe_tags": ["outdoor", "aesthetic", "brunch-spot"],
+    "drink_types": ["espresso", "latte", "flat-white", "cappuccino", "matcha"],
+    "specialty_flags": ["third-wave", "latte-art"],
+    "website": "https://www.pscafe.com",
+    "instagram": "@pscafe",
+    "drinks": [
+      { "name": "PS Latte", "drink_type": "latte", "flavor_tags": ["Vanilla", "Caramel"] },
+      { "name": "Flat White", "drink_type": "flat-white", "flavor_tags": ["Chocolate", "Honey"] },
+      { "name": "Iced Matcha", "drink_type": "matcha", "flavor_tags": ["Earthy", "Brown Sugar"] }
+    ]
+  },
+  {
+    "name": "The Coastal Settlement",
+    "address": "200 Netheravon Rd, Singapore 508529",
+    "neighborhood": "holland_village_dempsey",
+    "latitude": 1.3087,
+    "longitude": 103.8045,
+    "google_rating": 4.1,
+    "vibe_tags": ["rustic", "outdoor", "social"],
+    "drink_types": ["espresso", "latte", "flat-white", "cold-brew", "cappuccino"],
+    "specialty_flags": ["third-wave", "latte-art"],
+    "website": "https://www.thecoastalsettlement.com",
+    "instagram": "@thecoastalsettlement",
+    "drinks": [
+      { "name": "Coastal Flat White", "drink_type": "flat-white", "flavor_tags": ["Nutty", "Toasted"] },
+      { "name": "Iced Latte", "drink_type": "latte", "flavor_tags": ["Caramel", "Almond"] },
+      { "name": "Espresso Shot", "drink_type": "espresso", "flavor_tags": ["Dark Cocoa", "Smoky"] }
+    ]
+  }
+]
