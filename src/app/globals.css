@@ -5,4 +5,5 @@
 body {
   background: #FDFAF7;
   color: #2C2C2C;
+  font-family: var(--font-dm-sans), system-ui, sans-serif;
 }

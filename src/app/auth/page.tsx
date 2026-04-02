@@ -36,7 +36,7 @@ function AuthForm() {
       if (error) {
         setError(error.message);
       } else {
-        router.push("/onboarding");
+        router.push("/onboarding/intro");
       }
     }
 
@@ -74,7 +74,7 @@ function AuthForm() {
         </h1>
         <p className="text-latte text-[15px] mt-2 mb-10">
           {isSignUp
-            ? "Start your coffee journey"
+            ? "Let\u2019s get some brewmance going"
             : "We missed you — let\u2019s brew"}
         </p>
 

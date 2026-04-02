@@ -10,6 +10,7 @@ const config: Config = {
     extend: {
       fontFamily: {
         playfair: ["var(--font-playfair)", "serif"],
+        sans: ["var(--font-dm-sans)", "system-ui", "sans-serif"],
       },
       colors: {
         espresso: "#3B2314",

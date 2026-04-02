@@ -8,13 +8,18 @@ interface Props {
 }
 
 export default function StepRoastProfile({ value, onChange }: Props) {
-  const roastLabel = value < 0.33 ? "Light" : value < 0.66 ? "Medium" : "Dark";
+  const roastLabel =
+    value < 0.15 ? "Light" : value < 0.35 ? "Medium-Light" : value < 0.55 ? "Medium" : value < 0.75 ? "Medium-Dark" : "Dark";
   const roastDesc =
-    value < 0.33
+    value < 0.15
       ? "Bright, fruity, floral notes"
-      : value < 0.66
-        ? "Balanced, smooth, caramel"
-        : "Bold, chocolatey, smoky";
+      : value < 0.35
+        ? "Crisp, lively, tea-like"
+        : value < 0.55
+          ? "Balanced, smooth, caramel"
+          : value < 0.75
+            ? "Rich, bittersweet, full-bodied"
+            : "Bold, chocolatey, smoky";
 
   return (
     <div className="flex flex-col items-center pt-8">
@@ -29,11 +34,15 @@ export default function StepRoastProfile({ value, onChange }: Props) {
             className="absolute inset-0 rounded-full"
             animate={{
               background: `radial-gradient(circle, ${
-                value < 0.33
-                  ? "#D4A574, #E8CDB0"
-                  : value < 0.66
-                    ? "#8B6914, #A0845C"
-                    : "#3B2314, #5C3D24"
+                value < 0.15
+                  ? "#E8CDB0, #F0DCC4"
+                  : value < 0.35
+                    ? "#D4A574, #E0BFA0"
+                    : value < 0.55
+                      ? "#A0845C, #B89870"
+                      : value < 0.75
+                        ? "#6B4C30, #7D5E3E"
+                        : "#3B2314, #5C3D24"
               })`,
             }}
             transition={{ duration: 0.4 }}
@@ -79,7 +88,9 @@ export default function StepRoastProfile({ value, onChange }: Props) {
         </div>
         <div className="flex justify-between mt-3">
           <span className="text-xs text-latte/60 font-medium">Light</span>
+          <span className="text-xs text-latte/60 font-medium">Med-Light</span>
           <span className="text-xs text-latte/60 font-medium">Medium</span>
+          <span className="text-xs text-latte/60 font-medium">Med-Dark</span>
           <span className="text-xs text-latte/60 font-medium">Dark</span>
         </div>
       </div>

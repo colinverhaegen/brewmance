@@ -126,8 +126,11 @@ export default function OnboardingPage() {
           <h1 className="font-playfair text-[32px] font-bold text-espresso mb-3">
             Your Brewfile is ready!
           </h1>
-          <p className="text-latte text-[15px] max-w-[280px] leading-relaxed mb-10">
+          <p className="text-latte text-[15px] max-w-[280px] leading-relaxed mb-4">
             We&apos;ve mapped your coffee DNA. Let&apos;s see what kind of coffee lover you are.
+          </p>
+          <p className="text-latte/50 text-[13px] max-w-[280px] leading-relaxed italic mb-10">
+            P.S. This is just the start. Your Brewfile is ever-evolving as you engage in more brewmance.
           </p>
           <motion.button
             onClick={() => router.push("/brewfile")}

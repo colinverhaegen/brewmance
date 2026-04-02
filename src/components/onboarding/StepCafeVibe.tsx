@@ -20,14 +20,14 @@ export default function StepCafeVibe({ selected, onSelect }: Props) {
   function toggle(id: string) {
     if (selected.includes(id)) {
       onSelect(selected.filter((v) => v !== id));
-    } else if (selected.length < 2) {
+    } else if (selected.length < 3) {
       onSelect([...selected, id]);
     }
   }
 
   return (
     <div>
-      <p className="text-sm text-latte mb-4">Pick 1-2 that feel like you</p>
+      <p className="text-sm text-latte mb-4">Pick up to 3 that feel like you</p>
       <div className="space-y-3">
         {VIBES.map((vibe, i) => {
           const isSelected = selected.includes(vibe.id);

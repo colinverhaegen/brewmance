@@ -168,7 +168,7 @@ export default function SplashScreen() {
             transition={{ delay: 1.3, duration: 0.8 }}
             className="text-center text-latte/50 text-xs tracking-wider uppercase pt-2 pb-2"
           >
-            Your perfect cup awaits
+            Your perfect brew awaits
           </motion.p>
         </motion.div>
       </div>

@@ -7,34 +7,128 @@ import { Share2 } from "lucide-react";
 import type { Brewfile, WeightedPreference } from "@/types/brewfile";
 import RadarChart from "@/components/brewfile/RadarChart";
 
-function topNames(items: WeightedPreference[], limit = 3): string[] {
-  return items
+function topItems(items: WeightedPreference[], limit = 3): WeightedPreference[] {
+  return [...items]
     .sort((a, b) => b.weight - a.weight)
-    .slice(0, limit)
-    .map((i) => i.name);
+    .slice(0, limit);
 }
 
-function dimensionValue(items: WeightedPreference[]): number {
-  if (items.length === 0) return 0;
-  return Math.min(items.length / 3, 1);
-}
+const FLAVOR_EMOJI: Record<string, string> = {
+  Chocolate: "🍫", Caramel: "🍮", Vanilla: "🌿", Honey: "🍯",
+  "Brown Sugar": "🟤", Berry: "🫐", Citrus: "🍊", Tropical: "🥭",
+  "Stone Fruit": "🍑", "Dried Fruit": "🍇", Nutty: "🥜", Toffee: "🧈",
+  Roasty: "♨️", Floral: "🌸", Herbal: "🍃", Spicy: "🌶️",
+  Cinnamon: "🫚", Earthy: "🌍", Smoky: "🔥", Winey: "🍷",
+};
+
+const ORIGIN_FLAG: Record<string, string> = {
+  Ethiopian: "🇪🇹", Colombian: "🇨🇴", Indonesian: "🇮🇩",
+  Guatemalan: "🇬🇹", Kenyan: "🇰🇪", Brazilian: "🇧🇷",
+};
+
+const BREW_ICON: Record<string, string> = {
+  espresso_machine: "☕", pour_over: "🫗", cold_brew: "🧊",
+  aeropress: "🔬", french_press: "🫖", moka_pot: "🏺",
+};
 
 const VIBE_EMOJI: Record<string, string> = {
-  Minimalist: "◻️",
-  Cozy: "🕯️",
-  "Work-friendly": "💻",
-  Social: "🎉",
-  Aesthetic: "📸",
-  Outdoor: "🌿",
+  Minimalist: "◻️", Cozy: "🕯️", "Work-friendly": "💻",
+  Social: "🎉", Aesthetic: "📸", Outdoor: "🌿",
 };
 
 const RITUAL_EMOJI: Record<string, string> = {
-  "Morning Ritual": "🌅",
-  "Afternoon Pick-me-up": "⚡",
-  "Weekend Explorer": "🗺️",
-  "Social Occasion": "👋",
-  "Post-meal": "🍽️",
+  "Morning Ritual": "🌅", "Afternoon Pick-me-up": "⚡",
+  "Weekend Explorer": "🗺️", "Social Occasion": "👋", "Post-meal": "🍽️",
 };
+
+const card = "bg-cream/50 rounded-2xl p-5 shadow-[0_2px_8px_rgba(0,0,0,0.06)]";
+const sectionLabel = "text-[11px] font-semibold text-espresso/40 uppercase tracking-wider mb-3";
+
+function SpectrumBar({
+  label,
+  value,
+  leftLabel,
+  rightLabel,
+  gradient,
+  delay = 0,
+}: {
+  label: string;
+  value: number;
+  leftLabel: string;
+  rightLabel: string;
+  gradient: string;
+  delay?: number;
+}) {
+  const displayLabel =
+    value < 0.2 ? leftLabel
+    : value < 0.4 ? `Leaning ${leftLabel.toLowerCase()}`
+    : value < 0.6 ? "Balanced"
+    : value < 0.8 ? `Leaning ${rightLabel.toLowerCase()}`
+    : rightLabel;
+
+  return (
+    <div>
+      <div className="flex items-center justify-between mb-1.5">
+        <span className="text-[13px] font-semibold text-espresso">{label}</span>
+        <span className="text-[12px] text-latte font-medium">{displayLabel}</span>
+      </div>
+      <div className="relative h-2.5 bg-latte/10 rounded-full overflow-hidden">
+        <motion.div
+          className="absolute inset-y-0 left-0 rounded-full"
+          style={{ background: gradient }}
+          initial={{ width: 0 }}
+          animate={{ width: `${value * 100}%` }}
+          transition={{ delay, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+        />
+        {/* Marker dot */}
+        <motion.div
+          className="absolute top-1/2 -translate-y-1/2 w-3.5 h-3.5 bg-white rounded-full shadow-sm border-2 border-espresso/20"
+          initial={{ left: 0, opacity: 0 }}
+          animate={{ left: `calc(${value * 100}% - 7px)`, opacity: 1 }}
+          transition={{ delay: delay + 0.3, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+        />
+      </div>
+      <div className="flex justify-between mt-1">
+        <span className="text-[10px] text-latte/40">{leftLabel}</span>
+        <span className="text-[10px] text-latte/40">{rightLabel}</span>
+      </div>
+    </div>
+  );
+}
+
+function RankedBar({
+  label,
+  value,
+  maxValue,
+  icon,
+  delay = 0,
+}: {
+  label: string;
+  value: number;
+  maxValue: number;
+  icon?: string;
+  delay?: number;
+}) {
+  const pct = maxValue > 0 ? (value / maxValue) * 100 : 0;
+  return (
+    <div className="flex items-center gap-2.5">
+      {icon && <span className="text-base w-6 text-center flex-shrink-0">{icon}</span>}
+      <div className="flex-1">
+        <div className="flex items-center justify-between mb-0.5">
+          <span className="text-[13px] font-medium text-espresso">{label}</span>
+        </div>
+        <div className="h-2 bg-latte/10 rounded-full overflow-hidden">
+          <motion.div
+            className="h-full bg-gradient-to-r from-blush/70 to-blush rounded-full"
+            initial={{ width: 0 }}
+            animate={{ width: `${Math.max(pct, 8)}%` }}
+            transition={{ delay, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+          />
+        </div>
+      </div>
+    </div>
+  );
+}
 
 export default function BrewfilePage() {
   const [brewfile, setBrewfile] = useState<Brewfile | null>(null);
@@ -85,24 +179,21 @@ export default function BrewfilePage() {
     );
   }
 
-  // Radar chart data — 7 taste/source dimensions
-  const radarLabels = ["Drinks", "Roast", "Flavors", "Intensity", "Milk", "Origins", "Method"];
-  const radarValues = [
-    dimensionValue(brewfile.drink_type),
-    brewfile.roast_profile,
-    dimensionValue(brewfile.flavor_palette),
-    brewfile.intensity,
-    dimensionValue(brewfile.milk_extras),
-    dimensionValue(brewfile.bean_origin),
-    dimensionValue(brewfile.brew_method),
-  ];
+  // Flavor radar — use flavor palette names as labels, values as radar points
+  const topFlavors = topItems(brewfile.flavor_palette, 6);
+  const flavorLabels = topFlavors.map((f) => f.name);
+  const flavorValues = topFlavors.map((f) => f.weight);
 
-  const adventureLabel =
-    brewfile.adventurousness < 0.33
-      ? "Creature of Habit"
-      : brewfile.adventurousness < 0.66
-        ? "Open to Trying"
-        : "Always Exploring";
+  // Top drinks
+  const topDrinks = topItems(brewfile.drink_type, 4);
+  const maxDrinkWeight = topDrinks[0]?.weight || 1;
+
+  // Bean origins
+  const topOrigins = topItems(brewfile.bean_origin, 4);
+  const maxOriginWeight = topOrigins[0]?.weight || 1;
+
+  // Brew methods
+  const topMethods = topItems(brewfile.brew_method, 3);
 
   return (
     <div className="bg-soft-white min-h-screen pt-[env(safe-area-inset-top,12px)]">
@@ -119,122 +210,179 @@ export default function BrewfilePage() {
         </button>
       </div>
 
-      {/* Radar Chart Card */}
+      {/* ── Flavor Radar ── */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-        className="mx-4 mt-4 bg-cream/50 rounded-2xl p-4 shadow-[0_2px_8px_rgba(0,0,0,0.06)]"
+        className={`mx-4 mt-4 ${card}`}
       >
-        <div className="flex justify-center">
-          <RadarChart labels={radarLabels} values={radarValues} />
-        </div>
+        <h3 className={sectionLabel}>Flavor Profile</h3>
+        {topFlavors.length >= 3 ? (
+          <div className="flex justify-center -mt-2 -mb-2">
+            <RadarChart labels={flavorLabels} values={flavorValues} />
+          </div>
+        ) : (
+          <div className="flex flex-wrap gap-1.5">
+            {brewfile.flavor_palette.map((f) => (
+              <span key={f.name} className="px-2.5 py-1 bg-blush/10 text-espresso text-xs font-medium rounded-full">
+                {FLAVOR_EMOJI[f.name] || "☕"} {f.name}
+              </span>
+            ))}
+          </div>
+        )}
       </motion.div>
 
-      {/* Top Tastes */}
+      {/* ── Spectrum Sliders ── */}
       <motion.div
         initial={{ opacity: 0, y: 16 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.2, duration: 0.5 }}
-        className="mx-4 mt-4 bg-cream/50 rounded-2xl p-5 shadow-[0_2px_8px_rgba(0,0,0,0.06)]"
+        transition={{ delay: 0.15, duration: 0.5 }}
+        className={`mx-4 mt-3 ${card} space-y-5`}
       >
-        <h3 className="text-xs font-medium text-espresso/50 uppercase tracking-wider mb-3">Your Coffee DNA</h3>
-
-        <div className="space-y-3">
-          {brewfile.drink_type.length > 0 && (
-            <div>
-              <span className="text-xs text-latte font-medium">Drinks</span>
-              <div className="flex flex-wrap gap-1.5 mt-1">
-                {topNames(brewfile.drink_type).map((d) => (
-                  <span key={d} className="px-2.5 py-1 bg-blush/10 text-espresso text-xs font-medium rounded-full">{d}</span>
-                ))}
-              </div>
-            </div>
-          )}
-          {brewfile.flavor_palette.length > 0 && (
-            <div>
-              <span className="text-xs text-latte font-medium">Flavors</span>
-              <div className="flex flex-wrap gap-1.5 mt-1">
-                {topNames(brewfile.flavor_palette, 5).map((f) => (
-                  <span key={f} className="px-2.5 py-1 bg-latte/10 text-espresso text-xs font-medium rounded-full">{f}</span>
-                ))}
-              </div>
-            </div>
-          )}
-          {brewfile.bean_origin.length > 0 && (
-            <div>
-              <span className="text-xs text-latte font-medium">Origins</span>
-              <div className="flex flex-wrap gap-1.5 mt-1">
-                {topNames(brewfile.bean_origin).map((o) => (
-                  <span key={o} className="px-2.5 py-1 bg-cream text-espresso text-xs font-medium rounded-full border border-latte/15">{o}</span>
-                ))}
-              </div>
-            </div>
-          )}
-        </div>
+        <h3 className={sectionLabel}>Your Spectrum</h3>
+        <SpectrumBar
+          label="Roast"
+          value={brewfile.roast_profile}
+          leftLabel="Light"
+          rightLabel="Dark"
+          gradient="linear-gradient(to right, #E8CDB0, #A0845C, #3B2314)"
+          delay={0.3}
+        />
+        <SpectrumBar
+          label="Intensity"
+          value={brewfile.intensity}
+          leftLabel="Mild"
+          rightLabel="Strong"
+          gradient="linear-gradient(to right, #C8A882, #8B6914, #3B2314)"
+          delay={0.4}
+        />
+        <SpectrumBar
+          label="Adventurousness"
+          value={brewfile.adventurousness}
+          leftLabel="Creature of Habit"
+          rightLabel="Always Exploring"
+          gradient="linear-gradient(to right, #C8A882, #D4918B)"
+          delay={0.5}
+        />
       </motion.div>
 
-      {/* Experience Cards */}
-      <div className="mx-4 mt-4 grid grid-cols-2 gap-3">
-        {/* Cafe Vibe */}
+      {/* ── Top Drinks ── */}
+      {topDrinks.length > 0 && (
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.25, duration: 0.5 }}
+          className={`mx-4 mt-3 ${card}`}
+        >
+          <h3 className={sectionLabel}>Top Drinks</h3>
+          <div className="space-y-3">
+            {topDrinks.map((d, i) => (
+              <RankedBar
+                key={d.name}
+                label={d.name}
+                value={d.weight}
+                maxValue={maxDrinkWeight}
+                icon={i === 0 ? "🥇" : i === 1 ? "🥈" : i === 2 ? "🥉" : "☕"}
+                delay={0.4 + i * 0.08}
+              />
+            ))}
+          </div>
+        </motion.div>
+      )}
+
+      {/* ── Bean Origins ── */}
+      {topOrigins.length > 0 && (
         <motion.div
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.35, duration: 0.5 }}
-          className="bg-cream/50 rounded-2xl p-4 shadow-[0_2px_8px_rgba(0,0,0,0.06)]"
+          className={`mx-4 mt-3 ${card}`}
         >
-          <h3 className="text-xs font-medium text-espresso/50 uppercase tracking-wider mb-2">Cafe Vibe</h3>
-          <div className="space-y-1.5">
+          <h3 className={sectionLabel}>Bean Origins</h3>
+          <div className="space-y-3">
+            {topOrigins.map((o, i) => (
+              <RankedBar
+                key={o.name}
+                label={o.name}
+                value={o.weight}
+                maxValue={maxOriginWeight}
+                icon={ORIGIN_FLAG[o.name] || "🌍"}
+                delay={0.5 + i * 0.08}
+              />
+            ))}
+          </div>
+        </motion.div>
+      )}
+
+      {/* ── Brew Methods ── */}
+      {topMethods.length > 0 && (
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.4, duration: 0.5 }}
+          className={`mx-4 mt-3 ${card}`}
+        >
+          <h3 className={sectionLabel}>Brew Methods</h3>
+          <div className="flex gap-2.5">
+            {topMethods.map((m, i) => {
+              const label = m.name.replace(/_/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
+              return (
+                <motion.div
+                  key={m.name}
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ delay: 0.55 + i * 0.1 }}
+                  className="flex-1 bg-latte/8 rounded-xl p-3 flex flex-col items-center gap-1.5"
+                >
+                  <span className="text-2xl">{BREW_ICON[m.name] || "☕"}</span>
+                  <span className="text-[11px] font-medium text-espresso text-center leading-tight">{label}</span>
+                </motion.div>
+              );
+            })}
+          </div>
+        </motion.div>
+      )}
+
+      {/* ── Experience: Vibe + Ritual ── */}
+      <div className="mx-4 mt-3 grid grid-cols-2 gap-3">
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.5, duration: 0.5 }}
+          className={card}
+        >
+          <h3 className={sectionLabel}>Cafe Vibe</h3>
+          <div className="space-y-2">
             {brewfile.cafe_vibe.map((v) => (
               <div key={v.name} className="flex items-center gap-1.5">
                 <span className="text-base">{VIBE_EMOJI[v.name] || "☕"}</span>
-                <span className="text-sm font-medium text-espresso">{v.name}</span>
+                <span className="text-[13px] font-medium text-espresso">{v.name}</span>
               </div>
             ))}
           </div>
         </motion.div>
 
-        {/* Ritual */}
         <motion.div
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.4, duration: 0.5 }}
-          className="bg-cream/50 rounded-2xl p-4 shadow-[0_2px_8px_rgba(0,0,0,0.06)]"
+          transition={{ delay: 0.55, duration: 0.5 }}
+          className={card}
         >
-          <h3 className="text-xs font-medium text-espresso/50 uppercase tracking-wider mb-2">Ritual</h3>
-          <div className="space-y-1.5">
+          <h3 className={sectionLabel}>Ritual</h3>
+          <div className="space-y-2">
             {brewfile.ritual_pattern.map((r) => (
               <div key={r.name} className="flex items-center gap-1.5">
                 <span className="text-base">{RITUAL_EMOJI[r.name] || "☕"}</span>
-                <span className="text-sm font-medium text-espresso">{r.name}</span>
+                <span className="text-[13px] font-medium text-espresso">{r.name}</span>
               </div>
             ))}
           </div>
         </motion.div>
       </div>
 
-      {/* Adventurousness */}
-      <motion.div
-        initial={{ opacity: 0, y: 16 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.5, duration: 0.5 }}
-        className="mx-4 mt-4 mb-6 bg-cream/50 rounded-2xl p-5 shadow-[0_2px_8px_rgba(0,0,0,0.06)]"
-      >
-        <h3 className="text-xs font-medium text-espresso/50 uppercase tracking-wider mb-3">Adventurousness</h3>
-        <div className="flex items-center gap-3">
-          <div className="flex-1">
-            <div className="h-2.5 bg-latte/15 rounded-full overflow-hidden">
-              <motion.div
-                className="h-full bg-gradient-to-r from-latte to-blush rounded-full"
-                initial={{ width: 0 }}
-                animate={{ width: `${brewfile.adventurousness * 100}%` }}
-                transition={{ delay: 0.7, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-              />
-            </div>
-          </div>
-          <span className="text-sm font-semibold text-espresso whitespace-nowrap">{adventureLabel}</span>
-        </div>
-      </motion.div>
+      {/* Bottom spacer */}
+      <div className="h-6" />
     </div>
   );
 }

@@ -54,7 +54,6 @@ export default function StepDrinkType({ selected, onSelect }: Props) {
               <span className="text-xs text-latte/60">{drink.desc}</span>
               {isSelected && (
                 <motion.div
-                  layoutId="drink-check"
                   className="absolute top-2 right-2 w-5 h-5 bg-blush rounded-full flex items-center justify-center"
                   initial={{ scale: 0 }}
                   animate={{ scale: 1 }}

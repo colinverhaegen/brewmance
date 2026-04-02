@@ -3,20 +3,32 @@
 import { motion } from "framer-motion";
 
 const FLAVORS = [
+  // Sweet
   { id: "Chocolate", emoji: "🍫", cat: "sweet" },
   { id: "Caramel", emoji: "🍮", cat: "sweet" },
   { id: "Vanilla", emoji: "🌿", cat: "sweet" },
   { id: "Honey", emoji: "🍯", cat: "sweet" },
-  { id: "Toffee", emoji: "🧈", cat: "sweet" },
+  { id: "Brown Sugar", emoji: "🟤", cat: "sweet" },
+  // Fruit
   { id: "Berry", emoji: "🫐", cat: "fruit" },
   { id: "Citrus", emoji: "🍊", cat: "fruit" },
   { id: "Tropical", emoji: "🥭", cat: "fruit" },
   { id: "Stone Fruit", emoji: "🍑", cat: "fruit" },
+  { id: "Dried Fruit", emoji: "🍇", cat: "fruit" },
+  // Nutty / Roast
   { id: "Nutty", emoji: "🥜", cat: "nutty" },
+  { id: "Toffee", emoji: "🧈", cat: "nutty" },
+  { id: "Roasty", emoji: "♨️", cat: "roast" },
+  // Floral / Herbal
   { id: "Floral", emoji: "🌸", cat: "floral" },
+  { id: "Herbal", emoji: "🍃", cat: "floral" },
+  // Spice
   { id: "Spicy", emoji: "🌶️", cat: "spice" },
+  { id: "Cinnamon", emoji: "🫚", cat: "spice" },
+  // Earth / Body
   { id: "Earthy", emoji: "🌍", cat: "earth" },
-  { id: "Smoky", emoji: "🔥", cat: "roast" },
+  { id: "Smoky", emoji: "🔥", cat: "earth" },
+  { id: "Winey", emoji: "🍷", cat: "earth" },
 ];
 
 interface Props {
@@ -35,7 +47,7 @@ export default function StepFlavorPalette({ selected, onSelect }: Props) {
 
   return (
     <div>
-      <p className="text-sm text-latte mb-4">Pick 3-5 flavors you love</p>
+      <p className="text-sm text-latte mb-4">Pick 3-5 taste notes you like</p>
       <div className="flex flex-wrap gap-2.5">
         {FLAVORS.map((flavor, i) => {
           const isSelected = selected.includes(flavor.id);
