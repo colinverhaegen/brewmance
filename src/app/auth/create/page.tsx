@@ -17,17 +17,62 @@ export default function CreateAccountPage() {
     setLoading(true);
     setError(null);
 
-    const { error } = await supabase.auth.signUp({ email, password });
+    // Create account via server-side API (auto-confirms email)
+    const res = await fetch("/api/auth/signup", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, password }),
+    });
 
-    if (error) {
-      setError(error.message);
+    const data = await res.json();
+
+    if (!res.ok) {
+      setError(data.error || "Something went wrong");
       setLoading(false);
       return;
     }
 
-    // Store email for the verification page
-    localStorage.setItem("brewmance_verify_email", email);
-    router.push("/auth/verify");
+    // Now sign in with the newly created account
+    const { error: loginErr } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
+
+    if (loginErr) {
+      setError(loginErr.message);
+      setLoading(false);
+      return;
+    }
+
+    // Save pending brewfile to Supabase
+    await savePendingBrewfile();
+    router.push("/brewfile");
+  }
+
+  async function savePendingBrewfile() {
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) return;
+
+    const stored = localStorage.getItem("brewmance_brewfile");
+    if (!stored) return;
+
+    const brewfile = JSON.parse(stored);
+
+    await supabase.from("users").upsert({
+      id: user.id,
+      email: user.email!,
+      onboarding_completed: true,
+    });
+
+    await supabase.from("brewfiles").upsert({
+      user_id: user.id,
+      ...brewfile,
+      total_logs: 0,
+      last_updated: new Date().toISOString(),
+    });
+
+    localStorage.removeItem("brewmance_brewfile");
+    localStorage.removeItem("brewmance_verify_email");
   }
 
   return (
@@ -38,7 +83,6 @@ export default function CreateAccountPage() {
         transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
         className="flex-1 flex flex-col"
       >
-        {/* Header */}
         <motion.div
           initial={{ scale: 0 }}
           animate={{ scale: 1 }}
