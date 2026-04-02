@@ -21,6 +21,33 @@ const FLAVOR_EMOJI: Record<string, string> = {
   Cinnamon: "🫚", Earthy: "🌍", Smoky: "🔥", Winey: "🍷",
 };
 
+// 6 main flavor categories for the radar chart
+const FLAVOR_CATEGORIES: { name: string; emoji: string; notes: string[] }[] = [
+  { name: "Sweet", emoji: "🍮", notes: ["Caramel", "Vanilla", "Honey", "Brown Sugar", "Toffee"] },
+  { name: "Fruity", emoji: "🫐", notes: ["Berry", "Citrus", "Tropical", "Stone Fruit", "Dried Fruit", "Winey"] },
+  { name: "Nutty", emoji: "🥜", notes: ["Nutty", "Chocolate", "Roasty"] },
+  { name: "Floral", emoji: "🌸", notes: ["Floral", "Herbal"] },
+  { name: "Spicy", emoji: "🌶️", notes: ["Spicy", "Cinnamon"] },
+  { name: "Earthy", emoji: "🌍", notes: ["Earthy", "Smoky"] },
+];
+
+function getCategoryScore(
+  palette: WeightedPreference[],
+  categoryNotes: string[]
+): { score: number; matched: string[] } {
+  const matched: string[] = [];
+  let totalWeight = 0;
+  for (const pref of palette) {
+    if (categoryNotes.includes(pref.name)) {
+      matched.push(pref.name);
+      totalWeight += pref.weight;
+    }
+  }
+  // Normalize: score is proportion of category notes selected, capped at 1
+  const score = Math.min(totalWeight / Math.max(categoryNotes.length * 0.5, 1), 1);
+  return { score, matched };
+}
+
 const ORIGIN_FLAG: Record<string, string> = {
   Ethiopian: "🇪🇹", Colombian: "🇨🇴", Indonesian: "🇮🇩",
   Guatemalan: "🇬🇹", Kenyan: "🇰🇪", Brazilian: "🇧🇷",
@@ -179,10 +206,13 @@ export default function BrewfilePage() {
     );
   }
 
-  // Flavor radar — use flavor palette names as labels, values as radar points
-  const topFlavors = topItems(brewfile.flavor_palette, 6);
-  const flavorLabels = topFlavors.map((f) => f.name);
-  const flavorValues = topFlavors.map((f) => f.weight);
+  // Flavor radar — 6 fixed categories, each scored by matched notes
+  const categoryData = FLAVOR_CATEGORIES.map((cat) => {
+    const { score, matched } = getCategoryScore(brewfile.flavor_palette, cat.notes);
+    return { ...cat, score, matched };
+  });
+  const flavorLabels = categoryData.map((c) => c.name);
+  const flavorValues = categoryData.map((c) => c.score);
 
   // Top drinks
   const topDrinks = topItems(brewfile.drink_type, 4);
@@ -218,19 +248,27 @@ export default function BrewfilePage() {
         className={`mx-4 mt-4 ${card}`}
       >
         <h3 className={sectionLabel}>Flavor Profile</h3>
-        {topFlavors.length >= 3 ? (
-          <div className="flex justify-center -mt-2 -mb-2">
-            <RadarChart labels={flavorLabels} values={flavorValues} />
-          </div>
-        ) : (
-          <div className="flex flex-wrap gap-1.5">
-            {brewfile.flavor_palette.map((f) => (
-              <span key={f.name} className="px-2.5 py-1 bg-blush/10 text-espresso text-xs font-medium rounded-full">
-                {FLAVOR_EMOJI[f.name] || "☕"} {f.name}
-              </span>
-            ))}
-          </div>
-        )}
+        <div className="flex justify-center -mt-2">
+          <RadarChart labels={flavorLabels} values={flavorValues} />
+        </div>
+        {/* Notes breakdown by category */}
+        <div className="space-y-2.5 mt-2">
+          {categoryData.filter((c) => c.matched.length > 0).map((cat) => (
+            <div key={cat.name} className="flex items-start gap-2">
+              <span className="text-sm mt-0.5">{cat.emoji}</span>
+              <div>
+                <span className="text-[12px] font-semibold text-espresso/60 uppercase tracking-wider">{cat.name}</span>
+                <div className="flex flex-wrap gap-1 mt-0.5">
+                  {cat.matched.map((note) => (
+                    <span key={note} className="px-2 py-0.5 bg-blush/8 text-espresso text-[11px] font-medium rounded-full">
+                      {FLAVOR_EMOJI[note] || ""} {note}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
       </motion.div>
 
       {/* ── Spectrum Sliders ── */}

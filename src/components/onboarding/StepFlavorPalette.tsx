@@ -4,31 +4,31 @@ import { motion } from "framer-motion";
 
 const FLAVORS = [
   // Sweet
-  { id: "Chocolate", emoji: "🍫", cat: "sweet" },
   { id: "Caramel", emoji: "🍮", cat: "sweet" },
   { id: "Vanilla", emoji: "🌿", cat: "sweet" },
   { id: "Honey", emoji: "🍯", cat: "sweet" },
   { id: "Brown Sugar", emoji: "🟤", cat: "sweet" },
-  // Fruit
-  { id: "Berry", emoji: "🫐", cat: "fruit" },
-  { id: "Citrus", emoji: "🍊", cat: "fruit" },
-  { id: "Tropical", emoji: "🥭", cat: "fruit" },
-  { id: "Stone Fruit", emoji: "🍑", cat: "fruit" },
-  { id: "Dried Fruit", emoji: "🍇", cat: "fruit" },
-  // Nutty / Roast
+  { id: "Toffee", emoji: "🧈", cat: "sweet" },
+  // Fruity
+  { id: "Berry", emoji: "🫐", cat: "fruity" },
+  { id: "Citrus", emoji: "🍊", cat: "fruity" },
+  { id: "Tropical", emoji: "🥭", cat: "fruity" },
+  { id: "Stone Fruit", emoji: "🍑", cat: "fruity" },
+  { id: "Dried Fruit", emoji: "🍇", cat: "fruity" },
+  { id: "Winey", emoji: "🍷", cat: "fruity" },
+  // Nutty
   { id: "Nutty", emoji: "🥜", cat: "nutty" },
-  { id: "Toffee", emoji: "🧈", cat: "nutty" },
-  { id: "Roasty", emoji: "♨️", cat: "roast" },
-  // Floral / Herbal
+  { id: "Chocolate", emoji: "🍫", cat: "nutty" },
+  { id: "Roasty", emoji: "♨️", cat: "nutty" },
+  // Floral
   { id: "Floral", emoji: "🌸", cat: "floral" },
   { id: "Herbal", emoji: "🍃", cat: "floral" },
-  // Spice
-  { id: "Spicy", emoji: "🌶️", cat: "spice" },
-  { id: "Cinnamon", emoji: "🫚", cat: "spice" },
-  // Earth / Body
-  { id: "Earthy", emoji: "🌍", cat: "earth" },
-  { id: "Smoky", emoji: "🔥", cat: "earth" },
-  { id: "Winey", emoji: "🍷", cat: "earth" },
+  // Spicy
+  { id: "Spicy", emoji: "🌶️", cat: "spicy" },
+  { id: "Cinnamon", emoji: "🫚", cat: "spicy" },
+  // Earthy
+  { id: "Earthy", emoji: "🌍", cat: "earthy" },
+  { id: "Smoky", emoji: "🔥", cat: "earthy" },
 ];
 
 interface Props {
