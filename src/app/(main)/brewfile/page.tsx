@@ -201,7 +201,15 @@ export default function BrewfilePage() {
       <div className="flex flex-col items-center justify-center min-h-[70vh] px-8 text-center">
         <span className="text-5xl mb-4">📋</span>
         <h2 className="font-playfair text-xl font-bold text-espresso mb-2">No Brewfile yet</h2>
-        <p className="text-latte text-sm">Complete the taste quiz to build your coffee profile.</p>
+        <p className="text-latte text-sm mb-6">Complete the taste quiz to build your coffee profile.</p>
+        <motion.a
+          href="/onboarding/intro"
+          whileHover={{ scale: 1.02 }}
+          whileTap={{ scale: 0.97 }}
+          className="bg-blush text-white px-8 py-3.5 rounded-3xl text-[15px] font-semibold shadow-lg shadow-blush/20 hover:bg-accent-rose transition-colors"
+        >
+          Take the Quiz
+        </motion.a>
       </div>
     );
   }

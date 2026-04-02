@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
+import { supabase } from "@/lib/supabase";
 import { generateBrewfile } from "@/lib/brewfile";
 import type { QuizAnswers } from "@/types/brewfile";
 import QuizLayout from "@/components/ui/QuizLayout";
@@ -23,6 +24,7 @@ export default function OnboardingPage() {
   const [direction, setDirection] = useState(1);
   const [saving, setSaving] = useState(false);
   const [complete, setComplete] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   // Quiz state
   const [drinkTypes, setDrinkTypes] = useState<string[]>([]);
@@ -79,8 +81,27 @@ export default function OnboardingPage() {
 
     const brewfile = generateBrewfile(answers);
 
-    // Save to localStorage — will be persisted to Supabase after account creation
-    localStorage.setItem("brewmance_brewfile", JSON.stringify(brewfile));
+    // Check if user is already logged in
+    const { data: { user } } = await supabase.auth.getUser();
+
+    if (user) {
+      // Already logged in — save directly to Supabase
+      await supabase.from("users").upsert({
+        id: user.id,
+        email: user.email!,
+        onboarding_completed: true,
+      });
+      await supabase.from("brewfiles").upsert({
+        user_id: user.id,
+        ...brewfile,
+        total_logs: 0,
+        last_updated: new Date().toISOString(),
+      });
+      setIsLoggedIn(true);
+    } else {
+      // Not logged in — save to localStorage for after account creation
+      localStorage.setItem("brewmance_brewfile", JSON.stringify(brewfile));
+    }
 
     setSaving(false);
     setComplete(true);
@@ -111,7 +132,7 @@ export default function OnboardingPage() {
             We&apos;ve mapped your coffee DNA. Let&apos;s see what kind of coffee lover you are.
           </p>
           <motion.button
-            onClick={() => router.push("/auth/create")}
+            onClick={() => router.push(isLoggedIn ? "/brewfile" : "/auth/create")}
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.6 }}
@@ -119,7 +140,7 @@ export default function OnboardingPage() {
             whileTap={{ scale: 0.97 }}
             className="w-full max-w-[280px] bg-blush text-white py-4 rounded-3xl text-[17px] font-semibold shadow-lg shadow-blush/20 hover:bg-accent-rose transition-colors mb-6"
           >
-            Save My Brewfile
+            {isLoggedIn ? "See My Brewfile" : "Save My Brewfile"}
           </motion.button>
           <motion.p
             initial={{ opacity: 0 }}

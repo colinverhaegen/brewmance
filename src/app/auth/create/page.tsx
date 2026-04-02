@@ -9,6 +9,7 @@ export default function CreateAccountPage() {
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -16,6 +17,12 @@ export default function CreateAccountPage() {
     e.preventDefault();
     setLoading(true);
     setError(null);
+
+    if (password !== confirmPassword) {
+      setError("Passwords don't match");
+      setLoading(false);
+      return;
+    }
 
     // Create account via server-side API (auto-confirms email)
     const res = await fetch("/api/auth/signup", {
@@ -128,6 +135,26 @@ export default function CreateAccountPage() {
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="At least 6 characters"
                 className="w-full px-4 py-3.5 rounded-xl bg-soft-white border border-latte/15 text-espresso placeholder:text-latte/35 focus:outline-none focus:ring-2 focus:ring-blush/40 focus:border-blush/50 transition-all text-[15px]"
+              />
+            </div>
+
+            <div>
+              <label htmlFor="confirm-password" className="block text-[13px] font-medium text-espresso/70 mb-1.5 uppercase tracking-wider">
+                Confirm Password
+              </label>
+              <input
+                id="confirm-password"
+                type="password"
+                required
+                minLength={6}
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                placeholder="Type it again"
+                className={`w-full px-4 py-3.5 rounded-xl bg-soft-white border text-espresso placeholder:text-latte/35 focus:outline-none focus:ring-2 focus:ring-blush/40 focus:border-blush/50 transition-all text-[15px] ${
+                  confirmPassword && confirmPassword !== password
+                    ? "border-accent-rose/50"
+                    : "border-latte/15"
+                }`}
               />
             </div>
           </div>
