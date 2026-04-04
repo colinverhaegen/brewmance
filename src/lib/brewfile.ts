@@ -52,8 +52,10 @@ export function generateBrewfile(answers: QuizAnswers): Brewfile {
 }
 
 /**
- * Merge a new weighted item into an existing weighted array.
- * Increases weight if exists, adds if new.
+ * Merge new items into a weighted array.
+ * Positive boost = you like it, negative boost = you don't.
+ * Used for non-taste dimensions (drink type, vibe, brew method) where
+ * ordering something is always a positive signal.
  */
 function mergeWeighted(
   existing: WeightedPreference[],
@@ -67,13 +69,62 @@ function mergeWeighted(
   for (const name of newItems) {
     map.set(name, (map.get(name) || 0) + boost);
   }
-  // Normalize: cap at 1.0, decay others slightly
   const result: WeightedPreference[] = [];
   map.forEach((weight, name) => {
     const isNew = newItems.includes(name);
-    const adjusted = isNew ? Math.min(weight, 1.0) : weight * 0.98; // slight decay for non-logged
+    const adjusted = isNew ? Math.min(weight, 1.0) : weight * 0.98;
     if (adjusted > 0.01) {
       result.push({ name, weight: Math.round(adjusted * 100) / 100 });
+    }
+  });
+  return result.sort((a, b) => b.weight - a.weight);
+}
+
+/**
+ * Update flavor preferences based on what the user tasted AND how they rated it.
+ *
+ * Rating 5: strong positive (+boost * 1.5) — you love these flavors
+ * Rating 4: positive (+boost) — you like these
+ * Rating 3: neutral, very small positive (+boost * 0.2) — tried it, meh
+ * Rating 2: negative (-boost * 0.5) — didn't enjoy these
+ * Rating 1: strong negative (-boost) — actively dislike these
+ *
+ * This means the Brewfile flavor radar shows what you LIKE, not what you order.
+ */
+function mergeFlavorsByPreference(
+  existing: WeightedPreference[],
+  taggedFlavors: string[],
+  rating: number,
+  baseBoost: number = 0.15
+): WeightedPreference[] {
+  // Convert rating (1-5) to a sentiment multiplier
+  const sentiment =
+    rating >= 5 ? 1.5 :
+    rating >= 4 ? 1.0 :
+    rating >= 3 ? 0.2 :
+    rating >= 2 ? -0.5 :
+    -1.0;
+
+  const boost = baseBoost * sentiment;
+
+  const map = new Map<string, number>();
+  for (const item of existing) {
+    map.set(item.name, item.weight);
+  }
+  for (const name of taggedFlavors) {
+    const current = map.get(name) || 0;
+    map.set(name, current + boost);
+  }
+  // Slight decay for flavors NOT in this log (taste evolves)
+  const result: WeightedPreference[] = [];
+  map.forEach((weight, name) => {
+    const wasTagged = taggedFlavors.includes(name);
+    let adjusted = wasTagged ? weight : weight * 0.98;
+    // Clamp between 0 and 1
+    adjusted = Math.max(0, Math.min(1.0, adjusted));
+    adjusted = Math.round(adjusted * 100) / 100;
+    if (adjusted > 0.01) {
+      result.push({ name, weight: adjusted });
     }
   });
   return result.sort((a, b) => b.weight - a.weight);
@@ -118,9 +169,11 @@ export function updateBrewfileFromCafeLog(
     d.replace(/-/g, " ").replace(/\b\w/g, c => c.toUpperCase())
   ), logWeight);
 
-  // Flavor palette — boosted by rating (high rating = stronger signal)
-  const ratingBoost = log.rating >= 4 ? logWeight * 1.5 : logWeight * 0.5;
-  const flavor_palette = mergeWeighted(brewfile.flavor_palette, log.flavorTags, ratingBoost);
+  // Flavor palette — driven by PREFERENCE, not just frequency
+  // High rating = you like these flavors, low rating = you don't
+  const flavor_palette = mergeFlavorsByPreference(
+    brewfile.flavor_palette, log.flavorTags, log.rating, logWeight
+  );
 
   // Cafe vibe
   const cafe_vibe = mergeWeighted(brewfile.cafe_vibe, log.cafeVibes, logWeight);
@@ -170,9 +223,11 @@ export function updateBrewfileFromHomeBrewLog(
   totalLogs: number
 ): Brewfile {
   const logWeight = Math.max(0.05, 0.2 - totalLogs * 0.005);
-  const ratingBoost = log.rating >= 4 ? logWeight * 1.5 : logWeight * 0.5;
 
-  const flavor_palette = mergeWeighted(brewfile.flavor_palette, log.flavorTags, ratingBoost);
+  // Flavor palette — driven by PREFERENCE, not just frequency
+  const flavor_palette = mergeFlavorsByPreference(
+    brewfile.flavor_palette, log.flavorTags, log.rating, logWeight
+  );
 
   const brewMethodMap: Record<string, string> = {
     "espresso-machine": "espresso_machine",
