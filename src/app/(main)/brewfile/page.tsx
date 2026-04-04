@@ -265,6 +265,24 @@ export default function BrewfilePage() {
   topVibes.sort((a, b) => b.weight - a.weight);
   const displayVibes = topVibes.slice(0, 3);
 
+  // Ritual — top pattern + time-of-day breakdown
+  const sortedRituals = [...brewfile.ritual_pattern].sort((a, b) => b.weight - a.weight);
+  const topRitual = sortedRituals[0] || null;
+
+  // Build time-of-day slots from ritual data
+  const ritualWeightMap = new Map<string, number>();
+  for (const r of brewfile.ritual_pattern) {
+    ritualWeightMap.set(r.name, r.weight);
+  }
+  const maxRitualWeight = Math.max(...brewfile.ritual_pattern.map((r) => r.weight), 0.01);
+  const ritualSlots = [
+    { label: "AM", active: (ritualWeightMap.get("Morning Ritual") || 0) > 0.1, strength: (ritualWeightMap.get("Morning Ritual") || 0) / maxRitualWeight },
+    { label: "Noon", active: (ritualWeightMap.get("Social Occasion") || 0) > 0.1, strength: (ritualWeightMap.get("Social Occasion") || 0) / maxRitualWeight },
+    { label: "PM", active: (ritualWeightMap.get("Afternoon Pick-me-up") || 0) > 0.1, strength: (ritualWeightMap.get("Afternoon Pick-me-up") || 0) / maxRitualWeight },
+    { label: "Eve", active: (ritualWeightMap.get("Post-meal") || 0) > 0.1, strength: (ritualWeightMap.get("Post-meal") || 0) / maxRitualWeight },
+    { label: "Wknd", active: (ritualWeightMap.get("Weekend Explorer") || 0) > 0.1, strength: (ritualWeightMap.get("Weekend Explorer") || 0) / maxRitualWeight },
+  ];
+
   // Bean origins
   const topOrigins = topItems(brewfile.bean_origin, 4);
   const maxOriginWeight = topOrigins[0]?.weight || 1;
@@ -488,15 +506,32 @@ export default function BrewfilePage() {
           transition={{ delay: 0.55, duration: 0.5 }}
           className={card}
         >
-          <h3 className={sectionLabel}>Ritual</h3>
-          <div className="space-y-2">
-            {brewfile.ritual_pattern.map((r) => (
-              <div key={r.name} className="flex items-center gap-1.5">
-                <span className="text-base">{RITUAL_EMOJI[r.name] || "☕"}</span>
-                <span className="text-[13px] font-medium text-espresso">{r.name}</span>
+          <h3 className={sectionLabel}>Coffee Rhythm</h3>
+          {topRitual ? (
+            <div>
+              <div className="flex items-center gap-2 mb-2">
+                <span className="text-xl">{RITUAL_EMOJI[topRitual.name] || "☕"}</span>
+                <span className="text-[14px] font-bold text-espresso">{topRitual.name}</span>
               </div>
-            ))}
-          </div>
+              {/* Time-of-day bar */}
+              <div className="flex gap-0.5 mt-2">
+                {ritualSlots.map((slot) => (
+                  <div key={slot.label} className="flex-1 text-center">
+                    <div
+                      className="h-2 rounded-full mx-0.5 mb-1"
+                      style={{
+                        backgroundColor: slot.active ? "#D4918B" : "#E8DDD0",
+                        opacity: slot.active ? 0.5 + slot.strength * 0.5 : 0.4,
+                      }}
+                    />
+                    <span className="text-[9px] text-latte/50">{slot.label}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          ) : (
+            <p className="text-xs text-latte/50">Log more to see your rhythm</p>
+          )}
         </motion.div>
       </div>
 

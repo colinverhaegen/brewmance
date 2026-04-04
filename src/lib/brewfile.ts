@@ -144,6 +144,28 @@ export interface CafeLogInput {
   flavorTags: string[];
   cafeVibes: string[];
   cafeSpecialty: string[];
+  loggedAt?: Date; // timestamp to infer ritual
+}
+
+/**
+ * Infer which ritual pattern(s) this log represents based on time + day.
+ */
+function inferRitualFromTimestamp(date: Date): string[] {
+  const hour = date.getHours();
+  const day = date.getDay(); // 0=Sun, 6=Sat
+  const isWeekend = day === 0 || day === 6;
+  const rituals: string[] = [];
+
+  if (hour >= 5 && hour < 10) rituals.push("Morning Ritual");
+  else if (hour >= 12 && hour < 16) rituals.push("Afternoon Pick-me-up");
+  else if (hour >= 18) rituals.push("Post-meal");
+
+  if (isWeekend) rituals.push("Weekend Explorer");
+
+  // Fallback if no time match
+  if (rituals.length === 0) rituals.push("Social Occasion");
+
+  return rituals;
 }
 
 export interface HomeBrewLogInput {
@@ -151,6 +173,7 @@ export interface HomeBrewLogInput {
   beanOrigin: string | null;
   rating: number;
   flavorTags: string[];
+  loggedAt?: Date;
 }
 
 /**
@@ -206,6 +229,11 @@ export function updateBrewfileFromCafeLog(
   const adventureTarget = uniqueDrinks > 3 ? 0.7 : uniqueDrinks > 2 ? 0.5 : 0.3;
   const adventurousness = nudgeSpectrum(brewfile.adventurousness, adventureTarget, logWeight * 0.5);
 
+  // Ritual pattern — inferred from log timestamp
+  const logTime = log.loggedAt || new Date();
+  const inferredRituals = inferRitualFromTimestamp(logTime);
+  const ritual_pattern = mergeWeighted(brewfile.ritual_pattern, inferredRituals, logWeight);
+
   return {
     ...brewfile,
     drink_type,
@@ -215,6 +243,7 @@ export function updateBrewfileFromCafeLog(
     milk_extras,
     intensity,
     adventurousness,
+    ritual_pattern,
   };
 }
 
@@ -253,11 +282,17 @@ export function updateBrewfileFromHomeBrewLog(
   // Home brewers tend to be more adventurous
   const adventurousness = nudgeSpectrum(brewfile.adventurousness, 0.65, logWeight * 0.3);
 
+  // Ritual — inferred from timestamp
+  const logTime = log.loggedAt || new Date();
+  const inferredRituals = inferRitualFromTimestamp(logTime);
+  const ritual_pattern = mergeWeighted(brewfile.ritual_pattern, inferredRituals, logWeight);
+
   return {
     ...brewfile,
     flavor_palette,
     brew_method,
     bean_origin,
     adventurousness,
+    ritual_pattern,
   };
 }
