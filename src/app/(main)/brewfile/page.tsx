@@ -231,6 +231,20 @@ export default function BrewfilePage() {
   const flavorLabels = categoryData.map((c) => c.name);
   const flavorValues = categoryData.map((c) => c.score);
 
+  // Liked vs disliked flavor notes — based on weight thresholds
+  // High weight (>= 0.5) = you like it, low weight (< 0.3 but present) = probably not
+  const allFlavorNotes = brewfile.flavor_palette;
+  const likedNotes = allFlavorNotes
+    .filter((n) => n.weight >= 0.5)
+    .sort((a, b) => b.weight - a.weight)
+    .slice(0, 6)
+    .map((n) => n.name);
+  const dislikedNotes = allFlavorNotes
+    .filter((n) => n.weight > 0 && n.weight < 0.3)
+    .sort((a, b) => a.weight - b.weight)
+    .slice(0, 4)
+    .map((n) => n.name);
+
   // Top drinks
   const topDrinks = topItems(brewfile.drink_type, 4);
   const maxDrinkWeight = topDrinks[0]?.weight || 1;
@@ -281,23 +295,36 @@ export default function BrewfilePage() {
         <div className="flex justify-center -mt-2">
           <RadarChart labels={flavorLabels} values={flavorValues} />
         </div>
-        {/* Notes breakdown by category */}
-        <div className="space-y-2.5 mt-2">
-          {categoryData.filter((c) => c.matched.length > 0).map((cat) => (
-            <div key={cat.name} className="flex items-start gap-2">
-              <span className="text-sm mt-0.5">{cat.emoji}</span>
-              <div>
-                <span className="text-[12px] font-semibold text-espresso/60 uppercase tracking-wider">{cat.name}</span>
-                <div className="flex flex-wrap gap-1 mt-0.5">
-                  {cat.matched.map((note) => (
-                    <span key={note} className="px-2 py-0.5 bg-blush/8 text-espresso text-[11px] font-medium rounded-full">
-                      {FLAVOR_EMOJI[note] || ""} {note}
-                    </span>
-                  ))}
-                </div>
-              </div>
+        {/* Like vs Dislike columns */}
+        <div className="grid grid-cols-2 gap-3 mt-3">
+          {/* Likes */}
+          <div>
+            <p className="text-[11px] font-semibold text-espresso/40 uppercase tracking-wider mb-2">What you like</p>
+            <div className="flex flex-wrap gap-1">
+              {likedNotes.map((note) => (
+                <span key={note} className="px-2 py-0.5 bg-blush/10 text-espresso text-[11px] font-medium rounded-full">
+                  {FLAVOR_EMOJI[note] || ""} {note}
+                </span>
+              ))}
+              {likedNotes.length === 0 && (
+                <span className="text-[11px] text-latte/40">Keep logging to find out</span>
+              )}
             </div>
-          ))}
+          </div>
+          {/* Dislikes */}
+          <div>
+            <p className="text-[11px] font-semibold text-espresso/40 uppercase tracking-wider mb-2">Probably not your taste</p>
+            <div className="flex flex-wrap gap-1">
+              {dislikedNotes.map((note) => (
+                <span key={note} className="px-2 py-0.5 bg-latte/8 text-latte text-[11px] font-medium rounded-full">
+                  {FLAVOR_EMOJI[note] || ""} {note}
+                </span>
+              ))}
+              {dislikedNotes.length === 0 && (
+                <span className="text-[11px] text-latte/40">Nothing ruled out yet</span>
+              )}
+            </div>
+          </div>
         </div>
       </motion.div>
 
