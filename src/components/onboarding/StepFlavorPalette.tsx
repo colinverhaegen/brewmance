@@ -15,20 +15,20 @@ const FLAVORS = [
   { id: "Tropical", emoji: "🥭", cat: "fruity" },
   { id: "Stone Fruit", emoji: "🍑", cat: "fruity" },
   { id: "Dried Fruit", emoji: "🍇", cat: "fruity" },
-  { id: "Winey", emoji: "🍷", cat: "fruity" },
-  // Nutty
-  { id: "Nutty", emoji: "🥜", cat: "nutty" },
-  { id: "Chocolate", emoji: "🍫", cat: "nutty" },
-  { id: "Roasty", emoji: "♨️", cat: "nutty" },
-  // Floral
-  { id: "Floral", emoji: "🌸", cat: "floral" },
-  { id: "Herbal", emoji: "🍃", cat: "floral" },
+  // Nutty/Cocoa
+  { id: "Nutty", emoji: "🥜", cat: "nutty-cocoa" },
+  { id: "Chocolate", emoji: "🍫", cat: "nutty-cocoa" },
+  { id: "Winey", emoji: "🍷", cat: "nutty-cocoa" },
+  // Floral/Herbal
+  { id: "Floral", emoji: "🌸", cat: "floral-herbal" },
+  { id: "Herbal", emoji: "🍃", cat: "floral-herbal" },
   // Spicy
   { id: "Spicy", emoji: "🌶️", cat: "spicy" },
   { id: "Cinnamon", emoji: "🫚", cat: "spicy" },
-  // Earthy
-  { id: "Earthy", emoji: "🌍", cat: "earthy" },
-  { id: "Smoky", emoji: "🔥", cat: "earthy" },
+  // Roasty
+  { id: "Roasty", emoji: "🔥", cat: "roasty" },
+  { id: "Earthy", emoji: "🌍", cat: "roasty" },
+  { id: "Smoky", emoji: "♨️", cat: "roasty" },
 ];
 
 interface Props {

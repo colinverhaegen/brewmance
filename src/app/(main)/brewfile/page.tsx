@@ -17,18 +17,18 @@ const FLAVOR_EMOJI: Record<string, string> = {
   Chocolate: "🍫", Caramel: "🍮", Vanilla: "🌿", Honey: "🍯",
   "Brown Sugar": "🟤", Berry: "🫐", Citrus: "🍊", Tropical: "🥭",
   "Stone Fruit": "🍑", "Dried Fruit": "🍇", Nutty: "🥜", Toffee: "🧈",
-  Roasty: "♨️", Floral: "🌸", Herbal: "🍃", Spicy: "🌶️",
-  Cinnamon: "🫚", Earthy: "🌍", Smoky: "🔥", Winey: "🍷",
+  Roasty: "🔥", Floral: "🌸", Herbal: "🍃", Spicy: "🌶️",
+  Cinnamon: "🫚", Earthy: "🌍", Smoky: "♨️", Winey: "🍷",
 };
 
 // 6 main flavor categories for the radar chart
 const FLAVOR_CATEGORIES: { name: string; emoji: string; notes: string[] }[] = [
   { name: "Sweet", emoji: "🍮", notes: ["Caramel", "Vanilla", "Honey", "Brown Sugar", "Toffee"] },
-  { name: "Fruity", emoji: "🫐", notes: ["Berry", "Citrus", "Tropical", "Stone Fruit", "Dried Fruit", "Winey"] },
-  { name: "Nutty", emoji: "🥜", notes: ["Nutty", "Chocolate", "Roasty"] },
-  { name: "Floral", emoji: "🌸", notes: ["Floral", "Herbal"] },
+  { name: "Fruity", emoji: "🫐", notes: ["Berry", "Citrus", "Tropical", "Stone Fruit", "Dried Fruit"] },
+  { name: "Nutty/Cocoa", emoji: "🥜", notes: ["Nutty", "Chocolate", "Winey"] },
+  { name: "Floral/Herbal", emoji: "🌸", notes: ["Floral", "Herbal"] },
   { name: "Spicy", emoji: "🌶️", notes: ["Spicy", "Cinnamon"] },
-  { name: "Earthy", emoji: "🌍", notes: ["Earthy", "Smoky"] },
+  { name: "Roasty", emoji: "🔥", notes: ["Roasty", "Earthy", "Smoky"] },
 ];
 
 function getCategoryScore(

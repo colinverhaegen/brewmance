@@ -51,8 +51,8 @@ const FLAVOR_EMOJI: Record<string, string> = {
   Chocolate: "🍫", Caramel: "🍮", Vanilla: "🌿", Honey: "🍯",
   "Brown Sugar": "🟤", Berry: "🫐", Citrus: "🍊", Tropical: "🥭",
   "Stone Fruit": "🍑", "Dried Fruit": "🍇", Nutty: "🥜", Toffee: "🧈",
-  Roasty: "♨️", Floral: "🌸", Herbal: "🍃", Spicy: "🌶️",
-  Cinnamon: "🫚", Earthy: "🌍", Smoky: "🔥", Winey: "🍷",
+  Roasty: "🔥", Floral: "🌸", Herbal: "🍃", Spicy: "🌶️",
+  Cinnamon: "🫚", Earthy: "🌍", Smoky: "♨️", Winey: "🍷",
   "Dark Cocoa": "☕", Toasted: "🍞", "Black Pepper": "🫘",
 };
 

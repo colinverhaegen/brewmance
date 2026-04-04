@@ -3,26 +3,32 @@
 import { motion } from "framer-motion";
 
 const FLAVORS = [
+  // Sweet
   { id: "Caramel", emoji: "🍮" },
   { id: "Vanilla", emoji: "🌿" },
   { id: "Honey", emoji: "🍯" },
   { id: "Brown Sugar", emoji: "🟤" },
   { id: "Toffee", emoji: "🧈" },
+  // Fruity
   { id: "Berry", emoji: "🫐" },
   { id: "Citrus", emoji: "🍊" },
   { id: "Tropical", emoji: "🥭" },
   { id: "Stone Fruit", emoji: "🍑" },
   { id: "Dried Fruit", emoji: "🍇" },
-  { id: "Winey", emoji: "🍷" },
+  // Nutty/Cocoa
   { id: "Nutty", emoji: "🥜" },
   { id: "Chocolate", emoji: "🍫" },
-  { id: "Roasty", emoji: "♨️" },
+  { id: "Winey", emoji: "🍷" },
+  // Floral/Herbal
   { id: "Floral", emoji: "🌸" },
   { id: "Herbal", emoji: "🍃" },
+  // Spicy
   { id: "Spicy", emoji: "🌶️" },
   { id: "Cinnamon", emoji: "🫚" },
+  // Roasty
+  { id: "Roasty", emoji: "🔥" },
   { id: "Earthy", emoji: "🌍" },
-  { id: "Smoky", emoji: "🔥" },
+  { id: "Smoky", emoji: "♨️" },
 ];
 
 interface FlavorTagPickerProps {
