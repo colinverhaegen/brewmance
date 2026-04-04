@@ -245,9 +245,12 @@ export default function BrewfilePage() {
     .slice(0, 4)
     .map((n) => n.name);
 
-  // Top drinks
-  const topDrinks = topItems(brewfile.drink_type, 4);
-  const maxDrinkWeight = topDrinks[0]?.weight || 1;
+  // Top drinks — show top 3 with % of total
+  const allDrinkWeight = brewfile.drink_type.reduce((sum, d) => sum + d.weight, 0);
+  const topDrinks = topItems(brewfile.drink_type, 3).map((d) => ({
+    ...d,
+    percent: allDrinkWeight > 0 ? Math.round((d.weight / allDrinkWeight) * 100) : 0,
+  }));
 
   // Top vibes — deduplicate by normalizing to lowercase, merge weights, show top 3
   const vibeMap = new Map<string, number>();
@@ -371,16 +374,31 @@ export default function BrewfilePage() {
           className={`mx-4 mt-3 ${card}`}
         >
           <h3 className={sectionLabel}>Top Drinks</h3>
-          <div className="space-y-3">
+          <div className="space-y-2.5">
             {topDrinks.map((d, i) => (
-              <RankedBar
+              <motion.div
                 key={d.name}
-                label={d.name}
-                value={d.weight}
-                maxValue={maxDrinkWeight}
-                icon={i === 0 ? "🥇" : i === 1 ? "🥈" : i === 2 ? "🥉" : "☕"}
-                delay={0.4 + i * 0.08}
-              />
+                initial={{ opacity: 0, x: 12 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.4 + i * 0.08 }}
+                className="flex items-center gap-3"
+              >
+                <span className="text-lg w-7 text-center">{i === 0 ? "🥇" : i === 1 ? "🥈" : "🥉"}</span>
+                <div className="flex-1">
+                  <div className="flex items-center justify-between mb-1">
+                    <span className="text-[13px] font-semibold text-espresso">{d.name}</span>
+                    <span className="text-[13px] font-bold text-blush">{d.percent}%</span>
+                  </div>
+                  <div className="h-2 bg-latte/10 rounded-full overflow-hidden">
+                    <motion.div
+                      className="h-full bg-gradient-to-r from-blush/70 to-blush rounded-full"
+                      initial={{ width: 0 }}
+                      animate={{ width: `${d.percent}%` }}
+                      transition={{ delay: 0.5 + i * 0.08, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+                    />
+                  </div>
+                </div>
+              </motion.div>
             ))}
           </div>
         </motion.div>
