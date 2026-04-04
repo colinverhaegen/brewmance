@@ -1,14 +1,10 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { BEAN_ORIGINS } from "@/lib/constants";
 
 const ORIGINS = [
-  { id: "Ethiopian", flag: "🇪🇹", note: "Fruity, floral, bright" },
-  { id: "Colombian", flag: "🇨🇴", note: "Balanced, nutty, sweet" },
-  { id: "Indonesian", flag: "🇮🇩", note: "Earthy, bold, full-bodied" },
-  { id: "Guatemalan", flag: "🇬🇹", note: "Chocolatey, complex" },
-  { id: "Kenyan", flag: "🇰🇪", note: "Bright, berry, wine-like" },
-  { id: "Brazilian", flag: "🇧🇷", note: "Nutty, smooth, low-acid" },
+  ...BEAN_ORIGINS.filter((o) => o.id !== "Blend"),
   { id: "Surprise me", flag: "🌍", note: "I'm open to anything!" },
 ];
 

@@ -8,6 +8,7 @@ import { updateBrewfileFromHomeBrewLog } from "@/lib/brewfile";
 import type { Brewfile } from "@/types/brewfile";
 import CupRating from "@/components/log/CupRating";
 import FlavorTagPicker from "@/components/log/FlavorTagPicker";
+import BeanDetails from "@/components/log/BeanDetails";
 import { ArrowLeft } from "lucide-react";
 
 const BREW_METHODS = [
@@ -21,15 +22,6 @@ const BREW_METHODS = [
   { id: "chemex", icon: "⏳", label: "Chemex" },
 ];
 
-const ORIGINS = [
-  { id: "Ethiopian", flag: "🇪🇹" },
-  { id: "Colombian", flag: "🇨🇴" },
-  { id: "Indonesian", flag: "🇮🇩" },
-  { id: "Guatemalan", flag: "🇬🇹" },
-  { id: "Kenyan", flag: "🇰🇪" },
-  { id: "Brazilian", flag: "🇧🇷" },
-];
-
 const GRIND_SIZES = ["Fine", "Medium-Fine", "Medium", "Medium-Coarse", "Coarse"];
 
 export default function HomeBrewLogPage() {
@@ -37,9 +29,10 @@ export default function HomeBrewLogPage() {
   const [step, setStep] = useState(0);
   const [direction, setDirection] = useState(1);
 
-  const [beanName, setBeanName] = useState("");
+  const [beanNames, setBeanNames] = useState<string[]>([""]);
   const [beanBrand, setBeanBrand] = useState("");
-  const [beanOrigin, setBeanOrigin] = useState<string | null>(null);
+  const [beanOrigins, setBeanOrigins] = useState<string[]>([]);
+  const [roastLevel, setRoastLevel] = useState("");
   const [brewMethod, setBrewMethod] = useState("");
   const [rating, setRating] = useState(0);
   const [flavorTags, setFlavorTags] = useState<string[]>([]);
@@ -63,9 +56,9 @@ export default function HomeBrewLogPage() {
 
     await supabase.from("logs_homebrew").insert({
       user_id: user.id,
-      bean_name: beanName,
+      bean_name: beanNames.filter(Boolean).join(" + ") || "Unknown",
       bean_brand: beanBrand || null,
-      bean_origin: beanOrigin,
+      bean_origin: beanOrigins.join(", ") || null,
       brew_method: brewMethod,
       rating,
       flavor_tags: flavorTags,
@@ -87,7 +80,7 @@ export default function HomeBrewLogPage() {
       const bf = bfData as unknown as Brewfile & { total_logs: number };
       const updated = updateBrewfileFromHomeBrewLog(bf, {
         brewMethod,
-        beanOrigin,
+        beanOrigin: beanOrigins[0] || null,
         rating,
         flavorTags,
       }, bf.total_logs);
@@ -104,7 +97,7 @@ export default function HomeBrewLogPage() {
   }
 
   const canContinue = [
-    beanName.trim().length > 0,
+    beanNames.some((n) => n.trim().length > 0),
     !!brewMethod,
     rating > 0,
     true, // optional
@@ -119,8 +112,8 @@ export default function HomeBrewLogPage() {
           <p className="text-latte text-[15px] mb-2">Your Brewfile is evolving.</p>
 
           <div className="bg-cream/50 rounded-2xl p-4 w-full max-w-[300px] mt-4 mb-8 shadow-[0_2px_8px_rgba(0,0,0,0.06)]">
-            <p className="text-sm font-semibold text-espresso">{beanName}</p>
-            <p className="text-xs text-latte">{BREW_METHODS.find((m) => m.id === brewMethod)?.label} {beanOrigin && `· ${beanOrigin}`}</p>
+            <p className="text-sm font-semibold text-espresso">{beanNames.filter(Boolean).join(" + ")}</p>
+            <p className="text-xs text-latte">{BREW_METHODS.find((m) => m.id === brewMethod)?.label} {beanOrigins.length > 0 && `· ${beanOrigins.join(", ")}`}</p>
             <div className="flex items-center gap-1 mt-1">
               {Array.from({ length: rating }).map((_, i) => (
                 <span key={i} className="text-blush text-sm">☕</span>
@@ -150,24 +143,17 @@ export default function HomeBrewLogPage() {
     // Step 0: Bean info
     <div key="beans">
       <div className="space-y-4">
-        <div>
-          <label className="block text-[13px] font-medium text-espresso/70 mb-1.5 uppercase tracking-wider">Bean Name</label>
-          <input type="text" value={beanName} onChange={(e) => setBeanName(e.target.value)} placeholder="e.g. Yirgacheffe Natural" autoFocus className="w-full px-4 py-3 rounded-xl bg-cream/50 border border-latte/15 text-sm text-espresso placeholder:text-latte/35 focus:outline-none focus:ring-2 focus:ring-blush/30" />
-        </div>
+        <BeanDetails
+          beanNames={beanNames}
+          onBeanNamesChange={setBeanNames}
+          origins={beanOrigins}
+          onOriginsChange={setBeanOrigins}
+          roastLevel={roastLevel}
+          onRoastLevelChange={setRoastLevel}
+        />
         <div>
           <label className="block text-[13px] font-medium text-espresso/70 mb-1.5 uppercase tracking-wider">Roaster / Brand (optional)</label>
           <input type="text" value={beanBrand} onChange={(e) => setBeanBrand(e.target.value)} placeholder="e.g. Nylon Coffee Roasters" className="w-full px-4 py-3 rounded-xl bg-cream/50 border border-latte/15 text-sm text-espresso placeholder:text-latte/35 focus:outline-none focus:ring-2 focus:ring-blush/30" />
-        </div>
-        <div>
-          <label className="block text-[13px] font-medium text-espresso/70 mb-1.5 uppercase tracking-wider">Origin</label>
-          <div className="flex flex-wrap gap-2">
-            {ORIGINS.map((o) => (
-              <button key={o.id} onClick={() => setBeanOrigin(beanOrigin === o.id ? null : o.id)}
-                className={`flex items-center gap-1.5 px-3 py-2 rounded-full border-2 text-sm transition-all ${beanOrigin === o.id ? "border-blush bg-blush/10 font-semibold text-espresso" : "border-latte/15 bg-cream/40 text-espresso/60"}`}>
-                <span>{o.flag}</span> {o.id}
-              </button>
-            ))}
-          </div>
         </div>
       </div>
     </div>,

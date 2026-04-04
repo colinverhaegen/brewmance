@@ -8,6 +8,7 @@ import { updateBrewfileFromCafeLog } from "@/lib/brewfile";
 import type { Brewfile } from "@/types/brewfile";
 import CupRating from "@/components/log/CupRating";
 import FlavorTagPicker from "@/components/log/FlavorTagPicker";
+import BeanDetails from "@/components/log/BeanDetails";
 import { Search, MapPin, ArrowLeft, Star, Camera } from "lucide-react";
 
 interface Cafe {
@@ -53,6 +54,9 @@ export default function CafeLogPage() {
   const [selectedCafe, setSelectedCafe] = useState<Cafe | null>(null);
   const [drinkStyle, setDrinkStyle] = useState("");
   const [drinkName, setDrinkName] = useState("");
+  const [beanNames, setBeanNames] = useState<string[]>([""]);
+  const [beanOrigins, setBeanOrigins] = useState<string[]>([]);
+  const [roastLevel, setRoastLevel] = useState("");
   const [rating, setRating] = useState(0);
   const [flavorTags, setFlavorTags] = useState<string[]>([]);
   const [notes, setNotes] = useState("");
@@ -267,6 +271,21 @@ export default function CafeLogPage() {
             onChange={(e) => setDrinkName(e.target.value)}
             placeholder={drinkStyle === "other" ? "e.g. Affogato, Mocha..." : `e.g. ${DRINK_STYLES.find(d => d.id === drinkStyle)?.label || ""} with oat milk`}
             className="w-full px-4 py-3 rounded-xl bg-cream/50 border border-latte/15 text-sm text-espresso placeholder:text-latte/35 focus:outline-none focus:ring-2 focus:ring-blush/30"
+          />
+        </motion.div>
+      )}
+
+      {/* Bean details (optional) */}
+      {drinkStyle && (
+        <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="mt-5 pt-4 border-t border-latte/10">
+          <p className="text-xs text-latte/50 mb-3">Know the beans? (optional)</p>
+          <BeanDetails
+            beanNames={beanNames}
+            onBeanNamesChange={setBeanNames}
+            origins={beanOrigins}
+            onOriginsChange={setBeanOrigins}
+            roastLevel={roastLevel}
+            onRoastLevelChange={setRoastLevel}
           />
         </motion.div>
       )}
