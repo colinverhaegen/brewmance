@@ -175,8 +175,12 @@ export function updateBrewfileFromCafeLog(
     brewfile.flavor_palette, log.flavorTags, log.rating, logWeight
   );
 
-  // Cafe vibe
-  const cafe_vibe = mergeWeighted(brewfile.cafe_vibe, log.cafeVibes, logWeight);
+  // Cafe vibe — preference-based like flavors, normalized to lowercase
+  const normalizedVibes = log.cafeVibes.map((v) => v.toLowerCase());
+  const cafe_vibe = mergeFlavorsByPreference(
+    brewfile.cafe_vibe.map((v) => ({ ...v, name: v.name.toLowerCase() })),
+    normalizedVibes, log.rating, logWeight
+  );
 
   // Brew method from drink type
   const meta = log.drinkType ? DRINK_METADATA[log.drinkType.toLowerCase()] : null;

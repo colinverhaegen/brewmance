@@ -58,9 +58,18 @@ const BREW_ICON: Record<string, string> = {
   aeropress: "🔬", french_press: "🫖", moka_pot: "🏺",
 };
 
-const VIBE_EMOJI: Record<string, string> = {
-  Minimalist: "◻️", Cozy: "🕯️", "Work-friendly": "💻",
-  Social: "🎉", Aesthetic: "📸", Outdoor: "🌿",
+// Canonical vibe definitions — all lowercase keys matching DB data
+const VIBE_DATA: Record<string, { label: string; emoji: string }> = {
+  minimalist: { label: "Minimalist", emoji: "◻️" },
+  cozy: { label: "Cozy", emoji: "🕯️" },
+  "work-friendly": { label: "Work-friendly", emoji: "💻" },
+  social: { label: "Social", emoji: "🎉" },
+  aesthetic: { label: "Aesthetic", emoji: "📸" },
+  outdoor: { label: "Outdoor", emoji: "🌿" },
+  "hidden-gem": { label: "Hidden Gem", emoji: "💎" },
+  "brunch-spot": { label: "Brunch Spot", emoji: "🥞" },
+  rustic: { label: "Rustic", emoji: "🪵" },
+  industrial: { label: "Industrial", emoji: "🏭" },
 };
 
 const RITUAL_EMOJI: Record<string, string> = {
@@ -225,6 +234,19 @@ export default function BrewfilePage() {
   // Top drinks
   const topDrinks = topItems(brewfile.drink_type, 4);
   const maxDrinkWeight = topDrinks[0]?.weight || 1;
+
+  // Top vibes — deduplicate by normalizing to lowercase, merge weights, show top 3
+  const vibeMap = new Map<string, number>();
+  for (const v of brewfile.cafe_vibe) {
+    const key = v.name.toLowerCase();
+    vibeMap.set(key, (vibeMap.get(key) || 0) + v.weight);
+  }
+  const topVibes: { name: string; weight: number }[] = [];
+  vibeMap.forEach((weight, name) => {
+    topVibes.push({ name, weight: Math.min(weight, 1) });
+  });
+  topVibes.sort((a, b) => b.weight - a.weight);
+  const displayVibes = topVibes.slice(0, 3);
 
   // Bean origins
   const topOrigins = topItems(brewfile.bean_origin, 4);
@@ -400,12 +422,18 @@ export default function BrewfilePage() {
         >
           <h3 className={sectionLabel}>Cafe Vibe</h3>
           <div className="space-y-2">
-            {brewfile.cafe_vibe.map((v) => (
-              <div key={v.name} className="flex items-center gap-1.5">
-                <span className="text-base">{VIBE_EMOJI[v.name] || "☕"}</span>
-                <span className="text-[13px] font-medium text-espresso">{v.name}</span>
-              </div>
-            ))}
+            {displayVibes.map((v) => {
+              const data = VIBE_DATA[v.name] || { label: v.name, emoji: "☕" };
+              return (
+                <div key={v.name} className="flex items-center gap-1.5">
+                  <span className="text-base">{data.emoji}</span>
+                  <span className="text-[13px] font-medium text-espresso">{data.label}</span>
+                </div>
+              );
+            })}
+            {displayVibes.length === 0 && (
+              <p className="text-xs text-latte/50">Visit more cafes to discover your vibe</p>
+            )}
           </div>
         </motion.div>
 

@@ -3,12 +3,14 @@
 import { motion } from "framer-motion";
 
 const VIBES = [
-  { id: "Minimalist", icon: "◻️", desc: "Clean lines, quiet focus", color: "#E8E4E0" },
-  { id: "Cozy", icon: "🕯️", desc: "Warm lights, soft seats", color: "#D4C4B0" },
-  { id: "Work-friendly", icon: "💻", desc: "Power outlets & WiFi", color: "#C8D8D0" },
-  { id: "Social", icon: "🎉", desc: "Buzzy & vibrant", color: "#E8C8C4" },
-  { id: "Aesthetic", icon: "📸", desc: "Instagram-worthy", color: "#D4C8D8" },
-  { id: "Outdoor", icon: "🌿", desc: "Sunshine & fresh air", color: "#C8D8C0" },
+  { id: "minimalist", label: "Minimalist", icon: "◻️", desc: "Clean lines, quiet focus", color: "#E8E4E0" },
+  { id: "cozy", label: "Cozy", icon: "🕯️", desc: "Warm lights, soft seats", color: "#D4C4B0" },
+  { id: "work-friendly", label: "Work-friendly", icon: "💻", desc: "Power outlets & WiFi", color: "#C8D8D0" },
+  { id: "social", label: "Social", icon: "🎉", desc: "Buzzy & vibrant", color: "#E8C8C4" },
+  { id: "aesthetic", label: "Aesthetic", icon: "📸", desc: "Instagram-worthy", color: "#D4C8D8" },
+  { id: "outdoor", label: "Outdoor", icon: "🌿", desc: "Sunshine & fresh air", color: "#C8D8C0" },
+  { id: "hidden-gem", label: "Hidden Gem", icon: "💎", desc: "Off the beaten path", color: "#D0D8E0" },
+  { id: "brunch-spot", label: "Brunch Spot", icon: "🥞", desc: "Coffee + food heaven", color: "#E8D4C0" },
 ];
 
 interface Props {
@@ -53,7 +55,7 @@ export default function StepCafeVibe({ selected, onSelect }: Props) {
               </div>
               <div className="flex-1">
                 <span className={`text-[15px] font-semibold block ${isSelected ? "text-espresso" : "text-espresso/80"}`}>
-                  {vibe.id}
+                  {vibe.label}
                 </span>
                 <span className="text-xs text-latte/60">{vibe.desc}</span>
               </div>
