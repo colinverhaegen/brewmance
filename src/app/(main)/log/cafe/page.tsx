@@ -19,13 +19,6 @@ interface Cafe {
   google_rating: number | null;
 }
 
-interface Drink {
-  id: string;
-  cafe_id: string;
-  name: string;
-  drink_type: string;
-}
-
 const NEIGHBORHOOD_LABELS: Record<string, string> = {
   tiong_bahru: "Tiong Bahru",
   tanjong_pagar_telok_ayer: "Tanjong Pagar",
@@ -33,6 +26,21 @@ const NEIGHBORHOOD_LABELS: Record<string, string> = {
   orchard_river_valley: "Orchard",
   holland_village_dempsey: "Holland V",
 };
+
+const DRINK_STYLES = [
+  { id: "espresso", icon: "☕", label: "Espresso" },
+  { id: "flat-white", icon: "🥛", label: "Flat White" },
+  { id: "latte", icon: "🍵", label: "Latte" },
+  { id: "cappuccino", icon: "☁️", label: "Cappuccino" },
+  { id: "long-black", icon: "🖤", label: "Long Black" },
+  { id: "pour-over", icon: "🫗", label: "Pour Over" },
+  { id: "cold-brew", icon: "🧊", label: "Cold Brew" },
+  { id: "iced-latte", icon: "🥤", label: "Iced Latte" },
+  { id: "filter", icon: "🔻", label: "Filter" },
+  { id: "matcha", icon: "🍃", label: "Matcha" },
+  { id: "chai", icon: "🫖", label: "Chai" },
+  { id: "other", icon: "✨", label: "Other" },
+];
 
 export default function CafeLogPage() {
   const router = useRouter();
@@ -43,9 +51,8 @@ export default function CafeLogPage() {
   const [allCafes, setAllCafes] = useState<Cafe[]>([]);
   const [cafeSearch, setCafeSearch] = useState("");
   const [selectedCafe, setSelectedCafe] = useState<Cafe | null>(null);
-  const [cafeDrinks, setCafeDrinks] = useState<Drink[]>([]);
-  const [selectedDrink, setSelectedDrink] = useState<Drink | null>(null);
-  const [customDrinkName, setCustomDrinkName] = useState("");
+  const [drinkStyle, setDrinkStyle] = useState("");
+  const [drinkName, setDrinkName] = useState("");
   const [rating, setRating] = useState(0);
   const [flavorTags, setFlavorTags] = useState<string[]>([]);
   const [notes, setNotes] = useState("");
@@ -53,18 +60,9 @@ export default function CafeLogPage() {
   const [complete, setComplete] = useState(false);
 
   useEffect(() => {
-    supabase.from("cafes").select("id, name, neighborhood, vibe_tags, specialty_flags, google_rating").then(({ data }) => {
-      if (data) setAllCafes(data as Cafe[]);
-    });
+    supabase.from("cafes").select("id, name, neighborhood, vibe_tags, specialty_flags, google_rating")
+      .then(({ data }) => { if (data) setAllCafes(data as Cafe[]); });
   }, []);
-
-  // Load drinks when cafe selected
-  useEffect(() => {
-    if (!selectedCafe) return;
-    supabase.from("cafe_drinks").select("id, cafe_id, name, drink_type").eq("cafe_id", selectedCafe.id).then(({ data }) => {
-      if (data) setCafeDrinks(data as Drink[]);
-    });
-  }, [selectedCafe]);
 
   const filteredCafes = cafeSearch.trim()
     ? allCafes.filter((c) => c.name.toLowerCase().includes(cafeSearch.toLowerCase()))
@@ -76,20 +74,36 @@ export default function CafeLogPage() {
     else router.back();
   }
 
+  function selectCafe(cafe: Cafe) {
+    setSelectedCafe(cafe);
+    setDirection(1);
+    setStep(1);
+  }
+
+  function selectDrinkStyle(id: string) {
+    setDrinkStyle(id);
+    if (id === "other") {
+      // Don't auto-advance, let them type a name
+    } else {
+      const label = DRINK_STYLES.find((d) => d.id === id)?.label || id;
+      setDrinkName(label);
+    }
+  }
+
   async function saveLog() {
     setSaving(true);
     const { data: { user } } = await supabase.auth.getUser();
     if (!user || !selectedCafe) { setSaving(false); return; }
 
-    const drinkName = selectedDrink?.name || customDrinkName;
-    const drinkType = selectedDrink?.drink_type || null;
+    const finalDrinkName = drinkName || DRINK_STYLES.find((d) => d.id === drinkStyle)?.label || "Coffee";
+    const finalDrinkType = drinkStyle === "other" ? null : drinkStyle;
 
     // Insert log
     await supabase.from("logs_cafe").insert({
       user_id: user.id,
       cafe_id: selectedCafe.id,
-      drink_id: selectedDrink?.id || null,
-      drink_name: drinkName,
+      drink_id: null,
+      drink_name: finalDrinkName,
       rating,
       flavor_tags: flavorTags,
       notes: notes || null,
@@ -120,8 +134,8 @@ export default function CafeLogPage() {
     if (bfData) {
       const bf = bfData as unknown as Brewfile & { total_logs: number };
       const updated = updateBrewfileFromCafeLog(bf, {
-        drinkType,
-        drinkName,
+        drinkType: finalDrinkType,
+        drinkName: finalDrinkName,
         rating,
         flavorTags,
         cafeVibes: selectedCafe.vibe_tags,
@@ -140,13 +154,14 @@ export default function CafeLogPage() {
   }
 
   const canContinue = [
-    !!selectedCafe,
-    !!(selectedDrink || customDrinkName.trim()),
-    rating > 0,
-    true, // notes optional
+    !!selectedCafe,                                        // Step 0
+    !!(drinkStyle && (drinkStyle !== "other" || drinkName.trim())), // Step 1
+    rating > 0,                                            // Step 2
+    true,                                                  // Step 3
   ][step];
 
   if (complete) {
+    const styleLabel = DRINK_STYLES.find((d) => d.id === drinkStyle)?.label || drinkName;
     return (
       <div className="flex flex-col items-center justify-center min-h-[100dvh] bg-soft-white px-8">
         <motion.div
@@ -163,7 +178,7 @@ export default function CafeLogPage() {
 
           <div className="bg-cream/50 rounded-2xl p-4 w-full max-w-[300px] mt-4 mb-8 shadow-[0_2px_8px_rgba(0,0,0,0.06)]">
             <p className="text-sm font-semibold text-espresso">{selectedCafe?.name}</p>
-            <p className="text-xs text-latte">{selectedDrink?.name || customDrinkName}</p>
+            <p className="text-xs text-latte">{drinkName || styleLabel}</p>
             <div className="flex items-center gap-1 mt-1">
               {Array.from({ length: rating }).map((_, i) => (
                 <span key={i} className="text-blush text-sm">☕</span>
@@ -179,20 +194,8 @@ export default function CafeLogPage() {
           </div>
 
           <div className="flex gap-3 w-full max-w-[300px]">
-            <motion.button
-              onClick={() => router.push("/brewfile")}
-              whileTap={{ scale: 0.97 }}
-              className="flex-1 py-3 rounded-3xl text-sm font-semibold bg-blush text-white"
-            >
-              View Brewfile
-            </motion.button>
-            <motion.button
-              onClick={() => router.push("/log")}
-              whileTap={{ scale: 0.97 }}
-              className="flex-1 py-3 rounded-3xl text-sm font-semibold bg-cream text-espresso border border-latte/15"
-            >
-              Log Another
-            </motion.button>
+            <motion.button onClick={() => router.push("/brewfile")} whileTap={{ scale: 0.97 }} className="flex-1 py-3 rounded-3xl text-sm font-semibold bg-blush text-white">View Brewfile</motion.button>
+            <motion.button onClick={() => router.push("/log")} whileTap={{ scale: 0.97 }} className="flex-1 py-3 rounded-3xl text-sm font-semibold bg-cream text-espresso border border-latte/15">Log Another</motion.button>
           </div>
         </motion.div>
       </div>
@@ -214,24 +217,15 @@ export default function CafeLogPage() {
       <div className="relative mb-4">
         <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-latte/40" />
         <input
-          type="text"
-          value={cafeSearch}
-          onChange={(e) => setCafeSearch(e.target.value)}
-          placeholder="Search cafes..."
-          autoFocus
+          type="text" value={cafeSearch} onChange={(e) => setCafeSearch(e.target.value)}
+          placeholder="Search cafes..." autoFocus
           className="w-full pl-9 pr-3 py-3 rounded-xl bg-cream/50 border border-latte/15 text-sm text-espresso placeholder:text-latte/35 focus:outline-none focus:ring-2 focus:ring-blush/30"
         />
       </div>
       <div className="space-y-2 max-h-[50vh] overflow-y-auto">
         {filteredCafes.map((cafe) => (
-          <motion.button
-            key={cafe.id}
-            whileTap={{ scale: 0.98 }}
-            onClick={() => { setSelectedCafe(cafe); goNext(); }}
-            className={`w-full flex items-center gap-3 p-3.5 rounded-xl border-2 text-left transition-all ${
-              selectedCafe?.id === cafe.id ? "border-blush bg-blush/8" : "border-latte/15 bg-cream/40"
-            }`}
-          >
+          <motion.button key={cafe.id} whileTap={{ scale: 0.98 }} onClick={() => selectCafe(cafe)}
+            className="w-full flex items-center gap-3 p-3.5 rounded-xl border-2 text-left transition-all border-latte/15 bg-cream/40 hover:border-latte/30">
             <div className="w-10 h-10 bg-cream rounded-lg flex items-center justify-center text-lg flex-shrink-0">☕</div>
             <div className="flex-1 min-w-0">
               <p className="text-[14px] font-semibold text-espresso truncate">{cafe.name}</p>
@@ -245,34 +239,37 @@ export default function CafeLogPage() {
       </div>
     </div>,
 
-    // Step 1: Select drink
+    // Step 1: Select drink style + name
     <div key="drink">
-      <p className="text-sm text-latte mb-3">What did you have at {selectedCafe?.name}?</p>
-      <div className="space-y-2 mb-4">
-        {cafeDrinks.map((drink) => (
-          <motion.button
-            key={drink.id}
-            whileTap={{ scale: 0.98 }}
-            onClick={() => { setSelectedDrink(drink); setCustomDrinkName(""); }}
-            className={`w-full p-3.5 rounded-xl border-2 text-left transition-all ${
-              selectedDrink?.id === drink.id ? "border-blush bg-blush/8" : "border-latte/15 bg-cream/40"
-            }`}
-          >
-            <p className="text-[14px] font-semibold text-espresso">{drink.name}</p>
-            <p className="text-xs text-latte capitalize">{drink.drink_type?.replace(/-/g, " ")}</p>
+      <p className="text-sm text-latte mb-3">What style of drink?</p>
+      <div className="grid grid-cols-3 gap-2.5 mb-4">
+        {DRINK_STYLES.map((d, i) => (
+          <motion.button key={d.id} onClick={() => selectDrinkStyle(d.id)}
+            initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.03 }}
+            whileTap={{ scale: 0.95 }}
+            className={`flex flex-col items-center gap-1.5 p-3 rounded-xl border-2 transition-all ${
+              drinkStyle === d.id ? "border-blush bg-blush/8" : "border-latte/15 bg-cream/40"
+            }`}>
+            <span className="text-2xl">{d.icon}</span>
+            <span className="text-[11px] font-semibold text-espresso">{d.label}</span>
           </motion.button>
         ))}
       </div>
-      <div className="border-t border-latte/10 pt-3">
-        <p className="text-xs text-latte mb-2">Something else?</p>
-        <input
-          type="text"
-          value={customDrinkName}
-          onChange={(e) => { setCustomDrinkName(e.target.value); setSelectedDrink(null); }}
-          placeholder="Type drink name..."
-          className="w-full px-4 py-3 rounded-xl bg-cream/50 border border-latte/15 text-sm text-espresso placeholder:text-latte/35 focus:outline-none focus:ring-2 focus:ring-blush/30"
-        />
-      </div>
+
+      {/* Custom drink name for "other" or optional rename */}
+      {drinkStyle && (
+        <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} className="mt-2">
+          <label className="block text-[13px] font-medium text-espresso/70 mb-1.5 uppercase tracking-wider">
+            {drinkStyle === "other" ? "What was it?" : "Name it (optional)"}
+          </label>
+          <input
+            type="text" value={drinkName}
+            onChange={(e) => setDrinkName(e.target.value)}
+            placeholder={drinkStyle === "other" ? "e.g. Affogato, Mocha..." : `e.g. ${DRINK_STYLES.find(d => d.id === drinkStyle)?.label || ""} with oat milk`}
+            className="w-full px-4 py-3 rounded-xl bg-cream/50 border border-latte/15 text-sm text-espresso placeholder:text-latte/35 focus:outline-none focus:ring-2 focus:ring-blush/30"
+          />
+        </motion.div>
+      )}
     </div>,
 
     // Step 2: Rate + flavor tags
@@ -281,11 +278,7 @@ export default function CafeLogPage() {
         <p className="text-sm text-latte text-center mb-4">How was it?</p>
         <CupRating value={rating} onChange={setRating} />
         {rating > 0 && (
-          <motion.p
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            className="text-center text-sm text-espresso font-medium mt-2"
-          >
+          <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-center text-sm text-espresso font-medium mt-2">
             {rating === 1 ? "Not great" : rating === 2 ? "Okay" : rating === 3 ? "Good" : rating === 4 ? "Really good" : "Incredible!"}
           </motion.p>
         )}
@@ -300,10 +293,8 @@ export default function CafeLogPage() {
     <div key="notes">
       <p className="text-sm text-latte mb-4">Anything else? (Optional)</p>
       <textarea
-        value={notes}
-        onChange={(e) => setNotes(e.target.value)}
-        placeholder="Tasting notes, thoughts, anything..."
-        rows={4}
+        value={notes} onChange={(e) => setNotes(e.target.value)}
+        placeholder="Tasting notes, thoughts, anything..." rows={4}
         className="w-full px-4 py-3 rounded-xl bg-cream/50 border border-latte/15 text-sm text-espresso placeholder:text-latte/35 focus:outline-none focus:ring-2 focus:ring-blush/30 resize-none"
       />
       <button className="flex items-center gap-2 mt-3 px-4 py-2.5 rounded-xl bg-cream/50 border border-latte/15 text-sm text-latte">
@@ -312,54 +303,42 @@ export default function CafeLogPage() {
     </div>,
   ];
 
-  const titles = [
-    "Where are you?",
-    "What did you have?",
-    "How was it?",
-    "Anything else?",
-  ];
+  const titles = ["Where are you?", "What did you have?", "How was it?", "Anything else?"];
 
   return (
     <div className="flex flex-col min-h-[100dvh] bg-soft-white">
       {/* Header */}
       <div className="px-4 pt-[env(safe-area-inset-top,12px)] pb-3">
         <div className="flex items-center gap-3 pt-3">
-          <button onClick={goBack} className="text-latte hover:text-espresso p-1">
-            <ArrowLeft size={20} />
-          </button>
+          <button onClick={goBack} className="text-latte hover:text-espresso p-1"><ArrowLeft size={20} /></button>
           <div className="flex-1">
             <h1 className="font-playfair text-xl font-bold text-espresso">{titles[step]}</h1>
+            {step >= 1 && selectedCafe && (
+              <p className="text-xs text-latte">{selectedCafe.name}</p>
+            )}
           </div>
           <span className="text-xs text-latte/50">{step + 1}/4</span>
         </div>
-        {/* Progress */}
         <div className="h-1 bg-cream rounded-full mt-3 overflow-hidden">
-          <motion.div
-            className="h-full bg-blush rounded-full"
-            animate={{ width: `${((step + 1) / 4) * 100}%` }}
-            transition={{ duration: 0.3 }}
-          />
+          <motion.div className="h-full bg-blush rounded-full" animate={{ width: `${((step + 1) / 4) * 100}%` }} transition={{ duration: 0.3 }} />
         </div>
       </div>
 
       {/* Content */}
       <div className="flex-1 px-4 overflow-y-auto">
         <AnimatePresence mode="wait" custom={direction}>
-          <motion.div
-            key={step}
-            custom={direction}
+          <motion.div key={step} custom={direction}
             initial={{ x: direction > 0 ? 150 : -150, opacity: 0 }}
             animate={{ x: 0, opacity: 1 }}
             exit={{ x: direction > 0 ? -150 : 150, opacity: 0 }}
-            transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
-          >
+            transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}>
             {steps[step]}
           </motion.div>
         </AnimatePresence>
       </div>
 
-      {/* Bottom action */}
-      {step > 0 && (
+      {/* Bottom action — show on steps 1+ */}
+      {step >= 1 && (
         <div className="px-4 pb-[env(safe-area-inset-bottom,24px)] pt-3">
           <motion.button
             onClick={step === 3 ? saveLog : goNext}
@@ -369,6 +348,9 @@ export default function CafeLogPage() {
           >
             {step === 3 ? "Log It" : "Continue"}
           </motion.button>
+          {step === 3 && (
+            <button onClick={saveLog} className="w-full text-center text-sm text-latte mt-2">Skip & save</button>
+          )}
         </div>
       )}
     </div>
