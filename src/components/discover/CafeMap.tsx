@@ -1,11 +1,9 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Star, MapPin, X } from "lucide-react";
+import { Star, MapPin, ChevronRight, X } from "lucide-react";
 import type { ScoredCafe } from "@/lib/recommendations";
-import L from "leaflet";
-import "leaflet/dist/leaflet.css";
 
 const NEIGHBORHOOD_LABELS: Record<string, string> = {
   tiong_bahru: "Tiong Bahru",
@@ -15,20 +13,80 @@ const NEIGHBORHOOD_LABELS: Record<string, string> = {
   holland_village_dempsey: "Holland V / Dempsey",
 };
 
+const VIBE_EMOJI: Record<string, string> = {
+  minimalist: "◻️", cozy: "🕯️", "work-friendly": "💻",
+  social: "🎉", aesthetic: "📸", outdoor: "🌿",
+  "hidden-gem": "💎", "brunch-spot": "🥞", rustic: "🪵", industrial: "🏭",
+};
+
 interface CafeMapProps {
   cafes: ScoredCafe[];
   onCafeSelect: (cafeId: string) => void;
 }
 
+function makePinHtml(isSelected: boolean) {
+  const size = isSelected ? 36 : 28;
+  const bg = isSelected ? "#B5656B" : "#D4918B";
+  const border = isSelected ? "4px solid white" : "3px solid white";
+  const shadow = isSelected
+    ? "0 2px 12px rgba(181,101,107,0.5)"
+    : "0 2px 6px rgba(0,0,0,0.2)";
+  return `<div style="width:${size}px;height:${size}px;background:${bg};border-radius:50%;border:${border};box-shadow:${shadow};display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all 0.2s;">
+    <svg width="${isSelected ? 18 : 14}" height="${isSelected ? 18 : 14}" viewBox="0 0 24 24" fill="white"><path d="M18 8h1a4 4 0 010 8h-1M2 8h16v9a4 4 0 01-4 4H6a4 4 0 01-4-4V8zM6 1v3M10 1v3M14 1v3"/></svg>
+  </div>`;
+}
+
 export default function CafeMap({ cafes, onCafeSelect }: CafeMapProps) {
   const mapRef = useRef<HTMLDivElement>(null);
   const mapInstance = useRef<L.Map | null>(null);
+  const markersRef = useRef<Map<string, L.Marker>>(new Map());
   const [selectedCafe, setSelectedCafe] = useState<ScoredCafe | null>(null);
+  const selectedIdRef = useRef<string | null>(null);
+
+  const selectCafe = useCallback((cafe: ScoredCafe) => {
+    // Reset previous pin
+    if (selectedIdRef.current) {
+      const prevMarker = markersRef.current.get(selectedIdRef.current);
+      if (prevMarker) {
+        const L = require("leaflet");
+        prevMarker.setIcon(L.divIcon({
+          className: "",
+          html: makePinHtml(false),
+          iconSize: [28, 28],
+          iconAnchor: [14, 14],
+        }));
+      }
+    }
+
+    // Highlight new pin
+    const marker = markersRef.current.get(cafe.id);
+    if (marker) {
+      const L = require("leaflet");
+      marker.setIcon(L.divIcon({
+        className: "",
+        html: makePinHtml(true),
+        iconSize: [36, 36],
+        iconAnchor: [18, 18],
+      }));
+    }
+
+    selectedIdRef.current = cafe.id;
+    setSelectedCafe(cafe);
+  }, []);
 
   useEffect(() => {
-    if (!mapRef.current || mapInstance.current) return;
+    if (!mapRef.current) return;
 
-    // Singapore center
+    // Clean up previous map
+    if (mapInstance.current) {
+      mapInstance.current.remove();
+      mapInstance.current = null;
+      markersRef.current.clear();
+    }
+
+    const L = require("leaflet");
+    require("leaflet/dist/leaflet.css");
+
     const map = L.map(mapRef.current, {
       zoomControl: false,
       attributionControl: false,
@@ -38,20 +96,34 @@ export default function CafeMap({ cafes, onCafeSelect }: CafeMapProps) {
       maxZoom: 19,
     }).addTo(map);
 
-    // Custom pin icon
-    const pinIcon = L.divIcon({
+    const defaultIcon = L.divIcon({
       className: "",
-      html: `<div style="width:28px;height:28px;background:#D4918B;border-radius:50%;border:3px solid white;box-shadow:0 2px 6px rgba(0,0,0,0.2);display:flex;align-items:center;justify-content:center;cursor:pointer;">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="white"><path d="M18 8h1a4 4 0 010 8h-1M2 8h16v9a4 4 0 01-4 4H6a4 4 0 01-4-4V8zM6 1v3M10 1v3M14 1v3"/></svg>
-      </div>`,
+      html: makePinHtml(false),
       iconSize: [28, 28],
       iconAnchor: [14, 14],
     });
 
     cafes.forEach((cafe) => {
       if (!cafe.latitude || !cafe.longitude) return;
-      const marker = L.marker([cafe.latitude, cafe.longitude], { icon: pinIcon }).addTo(map);
-      marker.on("click", () => setSelectedCafe(cafe));
+      const marker = L.marker([cafe.latitude, cafe.longitude], {
+        icon: defaultIcon,
+        zIndexOffset: 0,
+      }).addTo(map);
+
+      marker.on("click", () => selectCafe(cafe));
+      markersRef.current.set(cafe.id, marker);
+    });
+
+    // Close card when clicking on empty map area
+    map.on("click", () => {
+      if (selectedIdRef.current) {
+        const prevMarker = markersRef.current.get(selectedIdRef.current);
+        if (prevMarker) {
+          prevMarker.setIcon(defaultIcon);
+        }
+        selectedIdRef.current = null;
+        setSelectedCafe(null);
+      }
     });
 
     mapInstance.current = map;
@@ -59,38 +131,57 @@ export default function CafeMap({ cafes, onCafeSelect }: CafeMapProps) {
     return () => {
       map.remove();
       mapInstance.current = null;
+      markersRef.current.clear();
     };
-  }, [cafes]);
+  }, [cafes, selectCafe]);
 
   return (
     <div className="relative w-full h-full">
       <div ref={mapRef} className="w-full h-full rounded-2xl overflow-hidden" />
 
-      {/* Selected cafe mini card */}
+      {/* Selected cafe insight card */}
       <AnimatePresence>
         {selectedCafe && (
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 20 }}
-            className="absolute bottom-4 left-3 right-3 bg-white rounded-2xl p-4 shadow-[0_4px_20px_rgba(0,0,0,0.12)]"
+            key={selectedCafe.id}
+            initial={{ opacity: 0, y: 30, scale: 0.95 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 20, scale: 0.95 }}
+            transition={{ type: "spring", damping: 25, stiffness: 300 }}
+            className="absolute bottom-4 left-3 right-3 bg-white rounded-2xl shadow-[0_4px_24px_rgba(0,0,0,0.14)] overflow-hidden"
           >
+            {/* Close button */}
             <button
-              onClick={() => setSelectedCafe(null)}
-              className="absolute top-3 right-3 text-latte/40 hover:text-espresso"
+              onClick={(e) => {
+                e.stopPropagation();
+                setSelectedCafe(null);
+                if (selectedIdRef.current) {
+                  const L = require("leaflet");
+                  const marker = markersRef.current.get(selectedIdRef.current);
+                  if (marker) {
+                    marker.setIcon(L.divIcon({
+                      className: "",
+                      html: makePinHtml(false),
+                      iconSize: [28, 28],
+                      iconAnchor: [14, 14],
+                    }));
+                  }
+                  selectedIdRef.current = null;
+                }
+              }}
+              className="absolute top-3 right-3 w-6 h-6 bg-latte/10 rounded-full flex items-center justify-center text-latte/50 hover:text-espresso hover:bg-latte/20 transition-all z-10"
             >
-              <X size={16} />
+              <X size={14} />
             </button>
-            <div
-              onClick={() => onCafeSelect(selectedCafe.id)}
-              className="cursor-pointer"
-            >
+
+            <div className="p-4">
+              {/* Header row */}
               <div className="flex items-start gap-3">
-                <div className="w-14 h-14 bg-cream rounded-xl flex items-center justify-center text-2xl flex-shrink-0">
+                <div className="w-12 h-12 bg-cream rounded-xl flex items-center justify-center text-xl flex-shrink-0">
                   ☕
                 </div>
-                <div className="flex-1 min-w-0">
-                  <h3 className="font-playfair text-[15px] font-bold text-espresso truncate">
+                <div className="flex-1 min-w-0 pr-6">
+                  <h3 className="font-playfair text-[16px] font-bold text-espresso leading-tight">
                     {selectedCafe.name}
                   </h3>
                   <div className="flex items-center gap-2 text-xs text-latte mt-0.5">
@@ -104,19 +195,35 @@ export default function CafeMap({ cafes, onCafeSelect }: CafeMapProps) {
                         {selectedCafe.google_rating.toFixed(1)}
                       </span>
                     )}
-                  </div>
-                  <div className="flex gap-1 mt-1.5">
-                    {selectedCafe.vibe_tags.slice(0, 2).map((tag) => (
-                      <span key={tag} className="px-2 py-0.5 bg-blush/8 text-espresso text-[10px] font-medium rounded-full">
-                        {tag}
-                      </span>
-                    ))}
-                    <span className="px-2 py-0.5 bg-blush/15 text-blush text-[10px] font-bold rounded-full">
-                      {selectedCafe.matchPercent}%
+                    <span className="text-blush font-bold">
+                      {selectedCafe.matchPercent}% match
                     </span>
                   </div>
                 </div>
               </div>
+
+              {/* Vibe tags */}
+              <div className="flex flex-wrap gap-1.5 mt-3">
+                {selectedCafe.vibe_tags.slice(0, 3).map((tag) => (
+                  <span key={tag} className="flex items-center gap-0.5 px-2 py-0.5 bg-cream text-espresso text-[11px] font-medium rounded-full">
+                    {VIBE_EMOJI[tag] || ""} {tag}
+                  </span>
+                ))}
+                {selectedCafe.specialty_flags.slice(0, 2).map((flag) => (
+                  <span key={flag} className="px-2 py-0.5 bg-latte/8 text-latte text-[11px] font-medium rounded-full">
+                    ✦ {flag}
+                  </span>
+                ))}
+              </div>
+
+              {/* CTA */}
+              <motion.button
+                onClick={() => onCafeSelect(selectedCafe.id)}
+                whileTap={{ scale: 0.97 }}
+                className="w-full mt-3 py-2.5 bg-blush text-white rounded-xl text-[13px] font-semibold flex items-center justify-center gap-1 hover:bg-accent-rose transition-colors"
+              >
+                View cafe <ChevronRight size={14} />
+              </motion.button>
             </div>
           </motion.div>
         )}
